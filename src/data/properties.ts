@@ -3,14 +3,21 @@ import type { Property } from "../types/Property";
 export const properties: Property[] = [
   {
     id: 1,
-    title: "Modern Family Home",
-    location: "Toronto, ON",
-    price: 899000,
+    title: "Modern Detached Home",
+    address: "123 Example Street",
+    city: "Vancouver",
+    province: "BC",
+    postalCode: "V5K 0A1",
+    price: 1280000,
     bedrooms: 4,
     bathrooms: 3,
+    propertyType: "Detached",
+    yearBuilt: 2018,
     image: "https://placehold.co/600x400",
-    panoramaUrl: "https://www.youtube.com/watch?v=L51dt5Jo14w",
-    description: "A modern family home with spacious rooms."
+    description: "Modern detached family home with spacious living areas.",
+    panoramaUrl: "YOUR_EXISTING_PANORAMA_URL",
+    dataSource: "Demo / Canadian Open Data",
+    isDemo: true
   },
   {
     id: 2,
