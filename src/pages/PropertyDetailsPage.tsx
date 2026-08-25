@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { properties } from "../data/properties";
 import { useState } from "react";
 import VirtualTourViewer from "../components/VirtualTourViewer";
+import BookingForm from "../components/BookingForm";
 
 function PropertyDetailsPage() {
     const [showTour, setShowTour] = useState(false);
@@ -33,9 +34,12 @@ function PropertyDetailsPage() {
 <p>{property.description}</p>
       <h1>{property.title}</h1>
       <p>ID: {property.id}</p>
-      <p>{property.location}</p>
+      {/* <p>{property.location}</p> */}
       <p>${property.price}</p>
-    </div>
+    
+    <h2>Book a Viewing</h2>
+<BookingForm />
+</div>  
   );
 }
 
