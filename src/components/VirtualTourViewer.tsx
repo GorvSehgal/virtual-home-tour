@@ -7,7 +7,9 @@ type VirtualTourViewerProps = {
     return (
         <div>
       <h3>360° Virtual Tour</h3>
-
+      <p className="tour-description">
+  Explore this property interactively in 360° before booking an in-person viewing.
+</p>
       <iframe
         src={panoramaUrl}
         title="Virtual Tour"

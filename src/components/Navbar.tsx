@@ -1,11 +1,55 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <nav>
-      <Link to="/">Home</Link>
-      <Link to="/properties">Properties</Link>
-    </nav>
+    <header className="navbar">
+      <div className="navbar-inner">
+        <Link to="/" className="navbar-logo" onClick={closeMenu}>
+          ⌂ VirtualHomeTour
+        </Link>
+
+        <button
+          className="menu-toggle"
+          onClick={() => setIsOpen((prev) => !prev)}
+          aria-label="Toggle navigation"
+        >
+          {isOpen ? "✕" : "☰"}
+        </button>
+
+        <nav className={`nav-links ${isOpen ? "open" : ""}`}>
+          <Link to="/properties" onClick={closeMenu}>
+            Properties
+          </Link>
+
+          <Link to="/properties" onClick={closeMenu}>
+            360° Tours
+          </Link>
+
+          <Link to="/for-realtors" onClick={closeMenu}>
+            For Realtors
+          </Link>
+
+          <Link to="/contact" onClick={closeMenu}>
+            Contact
+          </Link>
+
+          <Link
+            to="/list-property"
+            className="nav-cta"
+            onClick={closeMenu}
+          >
+            List Your Property
+          </Link>
+        </nav>
+      </div>
+    </header>
   );
 }
 

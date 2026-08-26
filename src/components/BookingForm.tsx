@@ -52,11 +52,12 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setMessage("");
   };
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="booking-form" onSubmit={handleSubmit}>
             <div>   
             <label htmlFor="name">Name:</label>
             <input
                 type="text" 
+                className="booking-input"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -65,6 +66,7 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
             <div>   
             <label htmlFor="email">Email:</label>
             <input
+            className="booking-input"
                 type="email"
                 id="email"
                 value={email}
@@ -74,6 +76,7 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
             <div>   
             <label htmlFor="phone">Phone:</label>
             <input
+            className="booking-input"
                 type="tel"
                 id="phone"  
                 value={phone}
@@ -84,6 +87,7 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
             <div>   
             <label htmlFor="preferredDate">Preferred Date:</label>
             <input
+            className="booking-input"
                 type="date"
                 id="preferredDate"
                 value={preferredDate}
@@ -94,6 +98,7 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
             <div>
             <label htmlFor="message">Message:</label>
             <textarea
+            className="booking-input"
                 id="message"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
@@ -101,7 +106,7 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
             </div>
             {error && <p>{error}</p>}
 {success && <p>Viewing request submitted successfully.</p>}
-            <button type="submit">Submit</button>
+            <button className="booking-submit" type="submit">Request Viewing</button>
         </form>
     );
 }

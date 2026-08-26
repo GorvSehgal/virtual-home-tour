@@ -34,52 +34,83 @@ onSortChange,
 onReset} : PropertyFiltersProps) { 
    
 return (
-    <div>
-        <h2>Filters</h2>
+    <div className="filters-panel">
+      <div className="filters-grid">
         <input
-            type="text"
-            placeholder="Search..."
-            value={search}
-            onChange={e => onSearchChange(e.target.value)}
+          className="filter-control search-control"
+          type="text"
+          placeholder="Search city, address..."
+          value={search}
+          onChange={e => onSearchChange(e.target.value)}
         />
-        <select value={city} onChange={e => onCityChange(e.target.value)}>
-        <option value="all">All Cities</option>
-        <option value="Vancouver">Vancouver</option>
-        <option value="Toronto">Toronto</option>
-        <option value="Calgary">Calgary</option>
-        </select>
-        <select value={propertyType} onChange={e => onPropertyTypeChange(e.target.value)}>
-        <option value="all">All Types</option>
-        <option value="Detached">Detached</option>
-        <option value="Condo">Condo</option>
-        <option value="Townhouse">Townhouse</option>
 
-        </select>
-        <select value={bedrooms} onChange={e => onBedroomsChange(e.target.value)}>
-            <option value="all">All Bedrooms</option>
-            <option value="1">1+</option>
-            <option value="2">2+</option>
-            <option value="3">3+</option>
+        <select
+          className="filter-control"
+          value={city}
+          onChange={e => onCityChange(e.target.value)}
+        >
+          <option value="all">All Cities</option>
+          <option value="Vancouver">Vancouver</option>
+          <option value="Toronto">Toronto</option>
+          <option value="Calgary">Calgary</option>
+          <option value="Ottawa">Ottawa</option>
+          <option value="Montreal">Montreal</option>
+          <option value="Kelowna">Kelowna</option>
         </select>
 
-        <input
-            type="number"
-            placeholder="Min Price"
-            value={minPrice}
-            onChange={e => onMinPriceChange(e.target.value)}
-        />
-        <input
-            type="number"
-            placeholder="Max Price"
-            value={maxPrice}
-            onChange={e => onMaxPriceChange(e.target.value)}
-        />
-        <select value={sortBy} onChange={e => onSortChange(e.target.value)}>
-            <option value="default">Default</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
+        <select
+          className="filter-control"
+          value={propertyType}
+          onChange={e => onPropertyTypeChange(e.target.value)}
+        >
+          <option value="all">All Types</option>
+          <option value="Detached">Detached</option>
+          <option value="Condo">Condo</option>
+          <option value="Townhouse">Townhouse</option>
         </select>
-          <button onClick={onReset}>Reset Filters</button>
+
+        <select
+          className="filter-control"
+          value={bedrooms}
+          onChange={e => onBedroomsChange(e.target.value)}
+        >
+          <option value="all">All Bedrooms</option>
+          <option value="1">1+ Beds</option>
+          <option value="2">2+ Beds</option>
+          <option value="3">3+ Beds</option>
+          <option value="4">4+ Beds</option>
+        </select>
+
+        <input
+          className="filter-control"
+          type="number"
+          placeholder="Min Price"
+          value={minPrice}
+          onChange={e => onMinPriceChange(e.target.value)}
+        />
+
+        <input
+          className="filter-control"
+          type="number"
+          placeholder="Max Price"
+          value={maxPrice}
+          onChange={e => onMaxPriceChange(e.target.value)}
+        />
+
+        <select
+          className="filter-control"
+          value={sortBy}
+          onChange={e => onSortChange(e.target.value)}
+        >
+          <option value="default">Sort By</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+        </select>
+
+        <button className="reset-filter-button" onClick={onReset}>
+          Reset
+        </button>
+      </div>
     </div>
 )
 }
