@@ -1,5 +1,5 @@
-import type { Property } from "../types/Property";
 import { Link } from "react-router-dom";
+import type { Property } from "../types/Property";
 
 type PropertyCardProps = {
   property: Property;
@@ -7,22 +7,46 @@ type PropertyCardProps = {
 
 function PropertyCard({ property }: PropertyCardProps) {
   return (
-    <div>
-      <img src={property.image} alt={property.title} />
+    <article className="property-card">
+      <div className="property-card-image">
+        <img
+          src={property.image}
+          alt={property.title}
+        />
+      </div>
 
-      <h2>{property.title}</h2>
+      <div className="property-card-content">
+        <p className="property-price">
+          ${property.price.toLocaleString("en-CA")}
+        </p>
 
-      <p>{property.location}</p>
+        <h3>{property.title}</h3>
 
-      <p>${property.price}</p>
+        <p className="property-location">
+          {property.city}, {property.province}
+        </p>
 
-      <p>
-        {property.bedrooms} Beds | {property.bathrooms} Baths
-      </p>
-      <Link to={`/properties/${property.id}`}>
-  View Property
-</Link>
-    </div>
+        <p className="property-meta">
+          {property.bedrooms} Beds · {property.bathrooms} Baths
+        </p>
+
+        <div className="property-card-actions">
+          <Link
+            to={`/properties/${property.id}`}
+            className="card-secondary-button"
+          >
+            View Details
+          </Link>
+
+          <Link
+            to={`/properties/${property.id}`}
+            className="card-primary-button"
+          >
+            360° Tour
+          </Link>
+        </div>
+      </div>
+    </article>
   );
 }
 

@@ -60,8 +60,12 @@ const handleResetFilters = () => {
   setSortBy("default");
 };
     return (
-      <div>
+      <section className="properties-page">
+      <div className="properties-header">
+        <p className="section-eyebrow">EXPLORE PROPERTIES</p>
         <h1>Properties</h1>
+        <p>Find your next home with immersive 360° virtual tours.</p>
+        </div>
         <PropertyFilters
   search={search}
   city={city}
@@ -79,8 +83,10 @@ const handleResetFilters = () => {
   onSortChange={setSortBy}
   onReset={handleResetFilters}
 />
-  
-        <div className="property-list">
+<div className="results-toolbar">
+    <p>{sortedProperties.length} properties found</p>
+  </div>
+  <div className="properties-grid">
            {sortedProperties.length === 0 ? (
     <p>No properties found.</p>
   ) : sortedProperties.map(property => (
@@ -90,7 +96,7 @@ const handleResetFilters = () => {
             />
           ))}
         </div>
-      </div>
+      </section>
     );
   }
   
