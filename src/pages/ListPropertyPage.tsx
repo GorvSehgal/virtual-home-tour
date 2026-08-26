@@ -106,7 +106,7 @@ function ListPropertyPage() {
 
         <p>
           Tell us about your listing and we’ll contact you about creating
-          an immersive VirtualHomeTour property experience.
+          an immersive ListingView360 property experience.
         </p>
       </section>
 

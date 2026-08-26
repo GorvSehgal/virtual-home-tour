@@ -106,7 +106,7 @@ function ForRealtorsPage() {
           <p className="section-eyebrow">READY TO GET STARTED?</p>
           <h2>Bring Your Next Listing Online</h2>
           <p>
-            Submit a property and see how VirtualHomeTour can create a more
+            Submit a property and see how ListingView360 can create a more
             immersive experience for potential buyers.
           </p>
         </div>

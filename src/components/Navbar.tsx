@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/branding/listingview360-logo.png";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +13,11 @@ function Navbar() {
     <header className="navbar">
       <div className="navbar-inner">
         <Link to="/" className="navbar-logo" onClick={closeMenu}>
-          ⌂ VirtualHomeTour
+          <img
+            src={logo}
+            alt="ListingView360"
+            className="navbar-logo-image"
+          />
         </Link>
 
         <button

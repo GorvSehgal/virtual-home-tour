@@ -9,17 +9,15 @@ function HomePage() {
     <main>
       <section className="hero">
         <div className="hero-content">
-          <p className="hero-eyebrow">360° PROPERTY EXPERIENCES</p>
+        <h2>
+  Turn Your Listings Into Immersive Experiences
+</h2>
 
-          <h1>
-            Discover Canadian Homes
-            <span> Virtually</span>
-          </h1>
-
-          <p className="hero-description">
-            Explore properties, take immersive 360° tours,
-            and book a viewing from anywhere in Canada.
-          </p>
+<p>
+  ListingView360 helps Realtors showcase properties
+  with interactive 360° tours, professional listing pages,
+  and direct buyer viewing requests.
+</p>
 
           <div className="hero-actions">
             <Link to="/properties" className="primary-button">

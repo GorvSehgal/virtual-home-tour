@@ -20,6 +20,17 @@ a {
   position: relative;
   z-index: 1000;
 }
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.navbar-logo-image {
+  height: 64px;
+  width: auto;
+  max-width: 250px;
+}
+
 
 .navbar-inner {
   max-width: 1200px;
@@ -62,6 +73,13 @@ a {
   border: none;
   font-size: 26px;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .navbar-logo-image {
+    height: 42px;
+    max-width: 170px;
+  }
 }
 @media (max-width: 768px) {
   .navbar-inner {
