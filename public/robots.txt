@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://listingview360.ca/sitemap.xml
