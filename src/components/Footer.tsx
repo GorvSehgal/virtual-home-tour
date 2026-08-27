@@ -6,7 +6,7 @@ function Footer() {
       <footer className="site-footer">
         <div className="footer-grid">
           <div>
-            <h3>VirtualHomeTour</h3>
+            <h3>ListingView360</h3>
             <p>
               Explore Canadian properties with immersive 360° virtual tours.
             </p>
@@ -20,7 +20,7 @@ function Footer() {
   
           <div>
             <h4>For Realtors</h4>
-            <a href="/list-property">List Your Property</a>
+            <Link to="/list-property">List Your Property</Link>
             <Link to="/contact">Contact</Link>
           </div>
   
@@ -32,7 +32,7 @@ function Footer() {
         </div>
   
         <div className="footer-bottom">
-          © 2026 VirtualHomeTour
+          © 2026 ListingView360
         </div>
       </footer>
     );

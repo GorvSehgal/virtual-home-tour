@@ -1368,3 +1368,60 @@ textarea.booking-input {
     width: 100%;
   }
 }
+.privacy-page {
+  min-height: 70vh;
+  background: #f8fafc;
+}
+
+.privacy-hero {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 70px 24px 35px;
+  text-align: center;
+}
+
+.privacy-hero h1 {
+  margin: 8px 0 16px;
+  font-size: 42px;
+}
+
+.privacy-hero p {
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.privacy-content {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 20px 24px 70px;
+}
+
+.privacy-content h2 {
+  margin-top: 32px;
+  margin-bottom: 10px;
+}
+
+.privacy-content p {
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.privacy-content a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .privacy-hero {
+    padding-top: 45px;
+  }
+
+  .privacy-hero h1 {
+    font-size: 32px;
+  }
+
+  .privacy-content {
+    padding-bottom: 50px;
+  }
+}
