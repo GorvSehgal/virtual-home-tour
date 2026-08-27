@@ -8,6 +8,8 @@ import "./App.css";
 import  Footer from "./components/Footer";
 import ForRealtorsPage from "./pages/ForRealtorsPage";
 import ListPropertyPage from "./pages/ListPropertyPage";
+import ContactPage from "./pages/ContactPage";
+import PrivacyPage from "./pages/PrivacyPage";
 function App() {
   return (
     <BrowserRouter>
@@ -21,6 +23,8 @@ function App() {
         />
         <Route path="/for-realtors" element={<ForRealtorsPage />} />
         <Route path="/list-property" element={<ListPropertyPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>
