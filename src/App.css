@@ -1425,3 +1425,29 @@ textarea.booking-input {
     padding-bottom: 50px;
   }
 }
+.tour-room-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.tour-room-buttons button {
+  border: 1px solid #0b2a5b;
+  background: #ffffff;
+  color: #0b2a5b;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.tour-room-buttons button:hover {
+  background: #eef4ff;
+}
+
+.tour-room-buttons button.active {
+  background: #0b2a5b;
+  color: #ffffff;
+}

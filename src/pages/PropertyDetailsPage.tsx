@@ -69,7 +69,7 @@ function PropertyDetailsPage() {
       </button>
 
       {showTour && (
-        <VirtualTourViewer panoramaUrl={property.panoramaUrl} />
+        <VirtualTourViewer panoramas={property.panoramas} />
       )}
     </section>
 
