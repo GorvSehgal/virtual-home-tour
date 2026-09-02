@@ -7,10 +7,11 @@ import { Link } from "react-router-dom";
 
 function PropertyDetailsPage() {
     const [showTour, setShowTour] = useState(false);
-  const { id } = useParams<{ id: string }>();
-
+    const { slug } = useParams<{ slug: string }>();
+    const propertyId = Number(slug?.split("-").pop());
+ 
   const property = properties.find(
-    property => property.id === Number(id)
+    property => property.id === Number(propertyId)
   );
 
 

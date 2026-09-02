@@ -18,9 +18,9 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/properties" element={<PropertiesPage />} />
         <Route
-          path="/properties/:id"
-          element={<PropertyDetailsPage />}
-        />
+  path="/properties/:slug"
+  element={<PropertyDetailsPage />}
+/>
         <Route path="/for-realtors" element={<ForRealtorsPage />} />
         <Route path="/list-property" element={<ListPropertyPage />} />
         <Route path="/contact" element={<ContactPage />} />
