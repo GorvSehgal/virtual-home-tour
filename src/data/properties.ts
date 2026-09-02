@@ -1,13 +1,20 @@
 import type { Property } from "../types/Property";
+
 import vancouverHome from "../assets/properties/vancouver-home.jpg";
-  import torontoCondo from "../assets/properties/toronto-condo.jpg";
-  import calgaryHome from "../assets/properties/calgary-home.jpg";
-  import ottawaTownhouse from "../assets/properties/ottawa-townhouse.jpg";
-  import montrealCondo from "../assets/properties/montreal-condo.jpg";
-  import kelownaWaterfront from "../assets/properties/kelowna-waterfront.jpg";
-const panoramaUrl =
-  "https://cdn.pannellum.org/2.5/pannellum.htm#panorama=https://pannellum.org/images/alma.jpg";
-  
+import torontoCondo from "../assets/properties/toronto-condo.jpg";
+import calgaryHome from "../assets/properties/calgary-home.jpg";
+import ottawaTownhouse from "../assets/properties/ottawa-townhouse.jpg";
+import montrealCondo from "../assets/properties/montreal-condo.jpg";
+import kelownaWaterfront from "../assets/properties/kelowna-waterfront.jpg";
+import livingRoomPanorama from "../assets/panoramas/living-room.jpg";
+import bedroomPanorma from "../assets/panoramas/bedroom.png";
+import bedroom2Panorama from "../assets/panoramas/bedroom2.png";
+/**
+ * Wikimedia Commons can return a resized version of the original
+ * equirectangular panorama.
+ */
+
+const panoramaUrl =  livingRoomPanorama;
 export const properties: Property[] = [
   {
     id: 1,
@@ -24,9 +31,12 @@ export const properties: Property[] = [
     image: vancouverHome,
     description:
       "Modern detached family home with spacious living areas.",
-    panoramaUrl,
-    dataSource: "Demo / Canadian Open Data",
-    isDemo: true
+    panoramas:  [
+  { name: "Living Room", url: panoramaUrl },
+  { name: "Bedroom 1", url: bedroomPanorma },
+  { name: "Bedroom 2", url: bedroom2Panorama }],
+    dataSource: "Demo 360 imagery — NPS / Wikimedia Commons",
+    isDemo: true,
   },
 
   {
@@ -44,9 +54,12 @@ export const properties: Property[] = [
     image: torontoCondo,
     description:
       "Modern downtown condo with bright interiors and convenient city access.",
-    panoramaUrl,
-    dataSource: "Demo / Canadian Open Data",
-    isDemo: true
+    panoramas:  [
+  { name: "Living Room", url: panoramaUrl },
+  { name: "Bedroom 1", url: bedroomPanorma },
+  { name: "Bedroom 2", url: bedroom2Panorama }],
+    dataSource: "Demo 360 imagery — NPS / Wikimedia Commons",
+    isDemo: true,
   },
 
   {
@@ -61,12 +74,15 @@ export const properties: Property[] = [
     bathrooms: 2,
     propertyType: "Detached",
     yearBuilt: 2019,
-    image:  calgaryHome,
+    image: calgaryHome,
     description:
       "Comfortable family home with an open layout and modern finishes.",
-    panoramaUrl,
-    dataSource: "Demo / Canadian Open Data",
-    isDemo: true
+    panoramas: [
+  { name: "Living Room", url: panoramaUrl },
+  { name: "Bedroom 1", url: bedroomPanorma },
+  { name: "Bedroom 2", url: bedroom2Panorama }],
+    dataSource: "Demo 360 imagery — NPS / Wikimedia Commons",
+    isDemo: true,
   },
 
   {
@@ -84,9 +100,12 @@ export const properties: Property[] = [
     image: ottawaTownhouse,
     description:
       "Spacious townhouse offering comfortable living near urban amenities.",
-    panoramaUrl,
-    dataSource: "Demo / Canadian Open Data",
-    isDemo: true
+    panoramas:  [
+  { name: "Living Room", url: panoramaUrl },
+  { name: "Bedroom 1", url: bedroomPanorma },
+  { name: "Bedroom2", url: bedroom2Panorama }],
+    dataSource: "Demo 360 imagery — NPS / Wikimedia Commons",
+    isDemo: true,
   },
 
   {
@@ -104,9 +123,12 @@ export const properties: Property[] = [
     image: montrealCondo,
     description:
       "Contemporary condo with efficient space and easy access to downtown.",
-    panoramaUrl,
-    dataSource: "Demo / Canadian Open Data",
-    isDemo: true
+    panoramas:  [
+  { name: "Living Room", url: panoramaUrl },
+  { name: "Bedroom 1", url: bedroomPanorma },
+  { name: "Bedroom 2", url: bedroom2Panorama }],
+    dataSource: "Demo 360 imagery — NPS / Wikimedia Commons",
+    isDemo: true,
   },
 
   {
@@ -124,8 +146,11 @@ export const properties: Property[] = [
     image: kelownaWaterfront,
     description:
       "Spacious home with scenic surroundings and generous family living space.",
-    panoramaUrl,
-    dataSource: "Demo / Canadian Open Data",
-    isDemo: true
-  }
+    panoramas:  [
+  { name: "Living Room", url: panoramaUrl },
+  { name: "Bedroom 1", url: bedroomPanorma },
+  { name: "Bedroom2", url: bedroom2Panorama }],
+    dataSource: "Demo 360 imagery — NPS / Wikimedia Commons",
+    isDemo: true,
+  },
 ];

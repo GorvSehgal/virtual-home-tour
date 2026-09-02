@@ -12,7 +12,10 @@ export type Property = {
   yearBuilt?: number;
   image: string;
   description: string;
-  panoramaUrl: string;
+  panoramas: {
+  name: string;
+  url: string;
+}[];
   dataSource: string;
   isDemo: boolean;
 };
