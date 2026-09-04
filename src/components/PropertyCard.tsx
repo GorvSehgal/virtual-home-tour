@@ -11,7 +11,9 @@ function PropertyCard({ property }: PropertyCardProps) {
       <div className="property-card-image">
         <img
           src={property.image}
-          alt={property.title}
+          alt={`${property.title} in ${property.city}, ${property.province}`}
+          loading="lazy"
+          decoding="async"
         />
       </div>
 
