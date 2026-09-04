@@ -1,27 +1,87 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-CA">
   <head>
     <meta charset="UTF-8" />
-  
+
     <link rel="icon" type="image/png" href="/favicon.png" />
-  
+
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
-  
+
     <meta
       name="description"
-      content="ListingView360 provides immersive 360° property experiences for Canadian Realtors."
+      content="Create and explore immersive 360° real estate tours with ListingView360, built for Canadian Realtors and serious property buyers."
     />
-  <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.css"
-/>
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large"
+    />
+    <meta name="theme-color" content="#0f2a5f" />
 
-<script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.js"></script>
-    <title>ListingView360 | 360° Property Tours Canada</title>
+    <meta
+      property="og:title"
+      content="360° Virtual Property Tours for Canadian Realtors | ListingView360"
+    />
+    <meta
+      property="og:description"
+      content="Create and explore immersive 360° real estate tours with ListingView360, built for Canadian Realtors and serious property buyers."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ListingView360" />
+    <meta property="og:locale" content="en_CA" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="360° Virtual Property Tours for Canadian Realtors | ListingView360"
+    />
+    <meta
+      name="twitter:description"
+      content="Create and explore immersive 360° real estate tours with ListingView360, built for Canadian Realtors and serious property buyers."
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.js"></script>
+
+    <script
+      type="application/ld+json"
+      data-listingview360-seo="structured-data"
+    >
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://listingview360.ca/#organization",
+            "name": "ListingView360",
+            "url": "https://listingview360.ca",
+            "logo": "https://listingview360.ca/favicon.png",
+            "email": "listingview360@gmail.com",
+            "areaServed": "Canada"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://listingview360.ca/#website",
+            "url": "https://listingview360.ca",
+            "name": "ListingView360",
+            "publisher": {
+              "@id": "https://listingview360.ca/#organization"
+            },
+            "inLanguage": "en-CA"
+          }
+        ]
+      }
+    </script>
+
+    <title>360° Virtual Property Tours for Canadian Realtors | ListingView360</title>
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
