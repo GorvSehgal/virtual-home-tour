@@ -45,6 +45,10 @@ function Navbar() {
             Contact
           </Link>
 
+          <Link to="/realtor/tools" onClick={closeMenu}>
+            Realtor Tools
+          </Link>
+
           <Link
             to="/list-property"
             className="nav-cta"
