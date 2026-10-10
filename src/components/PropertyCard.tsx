@@ -3,9 +3,10 @@ import type { Property } from "../types/Property";
 
 type PropertyCardProps = {
   property: Property;
+  detailsBasePath?: string;
 };
 
-function PropertyCard({ property }: PropertyCardProps) {
+function PropertyCard({ property, detailsBasePath = "/properties" }: PropertyCardProps) {
   return (
     <article className="property-card">
       <div className="property-card-image">
@@ -22,6 +23,9 @@ function PropertyCard({ property }: PropertyCardProps) {
           ${property.price.toLocaleString("en-CA")}
         </p>
 
+        {property.isDemo && (
+          <span className="property-demo-label">DEMO — not available</span>
+        )}
         <h3>{property.title}</h3>
 
         <p className="property-location">
@@ -34,18 +38,20 @@ function PropertyCard({ property }: PropertyCardProps) {
 
         <div className="property-card-actions">
           <Link
-            to={`/properties/${property.id}`}
+            to={`${detailsBasePath}/${property.id}`}
             className="card-secondary-button"
           >
             View Details
           </Link>
 
-          <Link
-            to={`/properties/${property.id}`}
-            className="card-primary-button"
-          >
-            360° Tour
-          </Link>
+          {property.panoramas.length > 0 && (
+            <Link
+              to={`${detailsBasePath}/${property.id}`}
+              className="card-primary-button"
+            >
+              360° Tour
+            </Link>
+          )}
         </div>
       </div>
     </article>

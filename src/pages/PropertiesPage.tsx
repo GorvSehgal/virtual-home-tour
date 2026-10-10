@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { properties } from "../data/properties";
+import { useProperties } from "../hooks/useProperties";
 import PropertyCard from "../components/PropertyCard";
 import PropertyFilters from "../components/PropertyFilters";
 
 function PropertiesPage() {
+  const { properties, loading, error } = useProperties();
+  const cities = Array.from(new Set(properties.map((property) => property.city))).sort();
+  const propertyTypes = Array.from(new Set(properties.map((property) => property.propertyType))).sort();
   const [search, setSearch] = useState("");
 const [city, setCity] = useState("all");
 const [propertyType, setPropertyType] = useState("all");
@@ -67,6 +70,8 @@ const handleResetFilters = () => {
         <p>Find your next home with immersive 360° virtual tours.</p>
         </div>
         <PropertyFilters
+  cities={cities}
+  propertyTypes={propertyTypes}
   search={search}
   city={city}
   propertyType={propertyType}
@@ -86,7 +91,9 @@ const handleResetFilters = () => {
 <div className="results-toolbar">
     <p>{sortedProperties.length} properties found</p>
   </div>
-  <div className="properties-grid">
+  {loading && <p role="status">Loading properties...</p>}
+  {error && <p role="alert">Could not load properties: {error}</p>}
+  {!loading && !error && <div className="properties-grid">
            {sortedProperties.length === 0 ? (
     <p>No properties found.</p>
   ) : sortedProperties.map(property => (
@@ -95,7 +102,7 @@ const handleResetFilters = () => {
               property={property}
             />
           ))}
-        </div>
+        </div>}
       </section>
     );
   }

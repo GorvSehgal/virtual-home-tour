@@ -12,6 +12,8 @@ import ContactPage from "./pages/ContactPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SeoManager from "./components/SeoManager";
+import RealtorToolsPage from "./pages/RealtorToolsPage";
+import DemoListingsPage from "./pages/DemoListingsPage";
 
 function App() {
   return (
@@ -21,11 +23,14 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/properties" element={<PropertiesPage />} />
+        <Route path="/demo" element={<DemoListingsPage />} />
+        <Route path="/demo/:id" element={<PropertyDetailsPage demoMode />} />
         <Route
           path="/properties/:id"
           element={<PropertyDetailsPage />}
         />
         <Route path="/for-realtors" element={<ForRealtorsPage />} />
+        <Route path="/realtor/tools" element={<RealtorToolsPage />} />
         <Route path="/list-property" element={<ListPropertyPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />

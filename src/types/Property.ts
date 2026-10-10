@@ -11,6 +11,7 @@ export type Property = {
   propertyType: string;
   yearBuilt?: number;
   image: string;
+  images?: string[];
   description: string;
   panoramas: {
   name: string;
