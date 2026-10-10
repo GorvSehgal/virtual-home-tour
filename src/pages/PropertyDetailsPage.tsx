@@ -3,6 +3,7 @@ import { useProperty } from "../hooks/useProperties";
 import { useState } from "react";
 import VirtualTourViewer from "../components/VirtualTourViewer";
 import BookingForm from "../components/BookingForm";
+import PropertyImageGallery from "../components/PropertyImageGallery";
 import { Link } from "react-router-dom";
 
 function PropertyDetailsPage() {
@@ -36,10 +37,16 @@ function PropertyDetailsPage() {
     </p>
   </div>
 
-  <img
-    className="property-hero-image"
-    src={property.image}
-    alt={property.title}
+  {property.isDemo && (
+    <p role="note" className="property-demo-notice">
+      DEMO LISTING — Fictional property for website testing. Not available for sale, rent, or viewing.
+    </p>
+  )}
+
+  <PropertyImageGallery
+    key={property.id}
+    photos={property.images?.length ? property.images : [property.image]}
+    title={property.title}
   />
 
   <div className="property-stats">
@@ -77,7 +84,11 @@ function PropertyDetailsPage() {
 
     <aside className="booking-panel">
       <h2>Book a Viewing</h2>
-      <BookingForm />
+      {property.isDemo ? (
+        <p>This is a fictional demonstration property; viewings cannot be booked.</p>
+      ) : (
+        <BookingForm />
+      )}
     </aside>
   </div>
 </div> 
