@@ -15,7 +15,7 @@ function Footer() {
           <div>
             <h4>Explore</h4>
             <Link to="/properties">Properties</Link>
-            <a href="#virtual-tours">360° Tours</a>
+            <Link to="/demo">360° Demo</Link>
           </div>
   
           <div>

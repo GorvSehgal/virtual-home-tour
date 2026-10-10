@@ -51,6 +51,12 @@ const routeSeo: Record<string, SeoConfig> = {
       "Browse Canadian property listings with immersive 360° virtual tours and request in-person viewings directly from each property page.",
     path: "/properties",
   },
+  "/demo": {
+    title: "Interactive 360° Demo Listings | ListingView360",
+    description: "Explore fictional demonstration listings and sample 360° virtual tours. Demo homes are not available for sale or viewing.",
+    path: "/demo",
+    noIndex: true,
+  },
   "/for-realtors": {
     title: "360° Real Estate Virtual Tours for Realtors | ListingView360",
     description:
@@ -131,6 +137,17 @@ function getSeoConfig(pathname: string): SeoConfig {
 
   if (staticConfig) {
     return staticConfig;
+  }
+
+  const demoMatch = normalizedPath.match(/^\/demo\/(\d+)$/);
+  if (demoMatch) {
+    const demoProperty = properties.find((item) => item.id === Number(demoMatch[1]));
+    return {
+      title: demoProperty ? `${demoProperty.title} — Fictional Demo | ListingView360` : "Demo Not Found | ListingView360",
+      description: "Fictional real estate demonstration with a sample 360° virtual tour; not available for sale, rent, or viewing.",
+      path: normalizedPath,
+      noIndex: true,
+    };
   }
 
   const propertyMatch = normalizedPath.match(/^\/properties\/(\d+)$/);

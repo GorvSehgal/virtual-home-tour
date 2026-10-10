@@ -3,9 +3,10 @@ import type { Property } from "../types/Property";
 
 type PropertyCardProps = {
   property: Property;
+  detailsBasePath?: string;
 };
 
-function PropertyCard({ property }: PropertyCardProps) {
+function PropertyCard({ property, detailsBasePath = "/properties" }: PropertyCardProps) {
   return (
     <article className="property-card">
       <div className="property-card-image">
@@ -37,7 +38,7 @@ function PropertyCard({ property }: PropertyCardProps) {
 
         <div className="property-card-actions">
           <Link
-            to={`/properties/${property.id}`}
+            to={`${detailsBasePath}/${property.id}`}
             className="card-secondary-button"
           >
             View Details
@@ -45,7 +46,7 @@ function PropertyCard({ property }: PropertyCardProps) {
 
           {property.panoramas.length > 0 && (
             <Link
-              to={`/properties/${property.id}`}
+              to={`${detailsBasePath}/${property.id}`}
               className="card-primary-button"
             >
               360° Tour

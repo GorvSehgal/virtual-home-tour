@@ -22,8 +22,8 @@ function ForRealtorsPage() {
               List Your Property
             </Link>
 
-            <Link to="/contact" className="secondary-button">
-              Request a Demo
+            <Link to="/demo" className="secondary-button">
+              Explore the 360° Demo
             </Link>
           </div>
         </div>

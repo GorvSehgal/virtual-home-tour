@@ -33,8 +33,8 @@ function Navbar() {
             Properties
           </Link>
 
-          <Link to="/properties" onClick={closeMenu}>
-            360° Tours
+          <Link to="/demo" onClick={closeMenu}>
+            360° Demo
           </Link>
 
           <Link to="/for-realtors" onClick={closeMenu}>

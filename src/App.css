@@ -1472,3 +1472,15 @@ textarea.booking-input {
   margin: 12px 0;
   font-weight: 650;
 }
+
+/* A self-contained demo that remains available without the property API. */
+.demo-page .properties-header { padding-bottom: 40px; }
+.demo-notice { max-width: 1152px; margin: 28px auto 0; padding: 18px 22px; border: 1px solid #f2dba4; border-radius: 12px; background: #fffbeb; color: #78350f; line-height: 1.6; }
+.demo-listings { max-width: 1200px; padding: 44px 24px 64px; margin: 0 auto; }
+.demo-bottom-cta { max-width: 1152px; margin: 0 auto 72px; padding: 40px; background: #eef4ff; border-radius: 16px; text-align: center; }
+.demo-bottom-cta h2 { margin: 0 0 12px; }
+.demo-bottom-cta p { color: #475569; }
+.demo-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
+.demo-prompt { margin: -10px 0 24px; line-height: 1.6; color: #475569; }
+.demo-prompt a { color: #1d4ed8; text-decoration: underline; font-weight: 600; }
+@media (max-width: 768px) { .demo-notice { margin: 22px 16px 0; } .demo-listings { padding: 36px 16px 48px; } .demo-bottom-cta { margin: 0 16px 48px; padding: 28px 20px; } .demo-actions { flex-direction: column; } }

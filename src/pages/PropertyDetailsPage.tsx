@@ -5,12 +5,18 @@ import VirtualTourViewer from "../components/VirtualTourViewer";
 import BookingForm from "../components/BookingForm";
 import PropertyImageGallery from "../components/PropertyImageGallery";
 import { Link } from "react-router-dom";
+import { properties as demoProperties } from "../data/properties";
 
-function PropertyDetailsPage() {
+function PropertyDetailsPage({ demoMode = false }: { demoMode?: boolean }) {
     const [showTour, setShowTour] = useState(false);
   const { id } = useParams<{ id: string }>();
 
-  const { property, loading, error } = useProperty(id ? Number(id) : undefined);
+  const requestedId = id ? Number(id) : undefined;
+  // Demo data is always local; a configured API must never hide demonstration tours.
+  const { property: apiProperty, loading, error } = useProperty(demoMode ? undefined : requestedId);
+  const property = demoMode
+    ? demoProperties.find((item) => item.id === requestedId) ?? null
+    : apiProperty;
 
   if (loading) return <p role="status">Loading property...</p>;
   if (error) return <p role="alert">Could not load property: {error}</p>;
@@ -20,8 +26,8 @@ function PropertyDetailsPage() {
 
   return (
     <div className="property-details-page">
-  <Link to="/properties" className="back-link">
-    ← Back to Properties
+  <Link to={demoMode ? "/demo" : "/properties"} className="back-link">
+    ← Back to {demoMode ? "Demo Listings" : "Properties"}
   </Link>
 
   <div className="property-details-header">
@@ -65,7 +71,7 @@ function PropertyDetailsPage() {
     <section className="tour-section">
       <h2>360° Virtual Tour</h2>
       <p className="tour-description">
-    Explore this property interactively in 360° before booking an in-person viewing.
+    {property.isDemo ? "Explore the sample rooms in 360°. These are demonstration images, not a real home for sale." : "Explore this property interactively in 360° before booking an in-person viewing."}
   </p>
       {property.panoramas.length > 0 ? (
         <>

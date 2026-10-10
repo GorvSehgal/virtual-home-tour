@@ -36,3 +36,10 @@ The `/realtor/tools` page lets administrators and trusted realtor accounts sign 
 - The page holds access tokens only in React component memory. Refreshing the page requires signing in again; no localStorage or URL tokens are used.
 - AI drafts are always human-reviewed and are never saved automatically.
 - If `VITE_API_BASE_URL` is missing or the backend is unavailable, a clear error appears instead of a false success.
+
+## Public demo showcase
+
+- The always-available `/demo` route displays the six bundled fictional sample homes even if the live API is configured or returns no properties.
+- Each `/demo/:id` detail page uses the bundled illustrative photography and 360° room panoramas, with booking disabled for demos.
+- Homepage, navigation, Realtors page, and footer link to the demo; demo routes are noindex to avoid misleading search results.
+- `/properties` continues to use the configured backend; real and sample inventory are never silently combined.

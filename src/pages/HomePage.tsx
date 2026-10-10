@@ -21,12 +21,12 @@ function HomePage() {
           </p>
 
           <div className="hero-actions">
-            <Link to="/properties" className="primary-button">
-              Browse Properties
+            <Link to="/demo" className="primary-button">
+              Explore the 360° Demo
             </Link>
 
-            <Link to="/list-property" className="secondary-button">
-              List Your Property
+            <Link to="/properties" className="secondary-button">
+              Browse Properties
             </Link>
           </div>
         </div>
@@ -51,6 +51,8 @@ function HomePage() {
             View all properties →
           </Link>
         </div>
+
+        <p className="demo-prompt">Want to experience the platform first? <Link to="/demo">Explore six fictional demo listings with interactive 360° tours →</Link></p>
 
         <div className="featured-grid">
           {loading && <p role="status">Loading featured properties...</p>}
@@ -112,8 +114,8 @@ function HomePage() {
               List Your Property
             </Link>
 
-            <Link to="/contact" className="secondary-button">
-              Request a Demo
+            <Link to="/demo" className="secondary-button">
+              Explore the Demo
             </Link>
           </div>
         </div>
