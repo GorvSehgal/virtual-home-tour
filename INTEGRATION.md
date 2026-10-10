@@ -26,3 +26,13 @@ The backend stores multiple `images` and `panoramas` per property; the current p
 - Add AI-assisted property description drafting and extracted listing metadata with human review, not automatic unreviewed publishing.
 - Add analytics using real consent-compliant interaction events.
 - Set `VITE_API_BASE_URL` in Vercel deployment settings once the backend has a stable HTTPS URL and a properly restricted CORS policy.
+
+## Realtor AI Tools
+
+The `/realtor/tools` page lets administrators and trusted realtor accounts sign in and draft property descriptions using the protected backend AI endpoint. It is not a public signup route.
+
+- Requires the authentication backend PR and its dependent AI drafting PR to be deployed.
+- Keep the Gemini key on the **backend only**. Set `GEMINI_API_KEY` and an available `GEMINI_MODEL` in the API's secure environment, not the frontend.
+- The page holds access tokens only in React component memory. Refreshing the page requires signing in again; no localStorage or URL tokens are used.
+- AI drafts are always human-reviewed and are never saved automatically.
+- If `VITE_API_BASE_URL` is missing or the backend is unavailable, a clear error appears instead of a false success.
