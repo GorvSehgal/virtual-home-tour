@@ -40,12 +40,14 @@ function PropertyCard({ property }: PropertyCardProps) {
             View Details
           </Link>
 
-          <Link
-            to={`/properties/${property.id}`}
-            className="card-primary-button"
-          >
-            360° Tour
-          </Link>
+          {property.panoramas.length > 0 && (
+            <Link
+              to={`/properties/${property.id}`}
+              className="card-primary-button"
+            >
+              360° Tour
+            </Link>
+          )}
         </div>
       </div>
     </article>
