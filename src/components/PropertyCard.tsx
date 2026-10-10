@@ -22,6 +22,9 @@ function PropertyCard({ property }: PropertyCardProps) {
           ${property.price.toLocaleString("en-CA")}
         </p>
 
+        {property.isDemo && (
+          <span className="property-demo-label">DEMO — not available</span>
+        )}
         <h3>{property.title}</h3>
 
         <p className="property-location">
