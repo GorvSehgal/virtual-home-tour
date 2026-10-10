@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { properties } from "../data/properties";
+import { useProperty } from "../hooks/useProperties";
 import { useState } from "react";
 import VirtualTourViewer from "../components/VirtualTourViewer";
 import BookingForm from "../components/BookingForm";
@@ -9,11 +9,10 @@ function PropertyDetailsPage() {
     const [showTour, setShowTour] = useState(false);
   const { id } = useParams<{ id: string }>();
 
-  const property = properties.find(
-    property => property.id === Number(id)
-  );
+  const { property, loading, error } = useProperty(id ? Number(id) : undefined);
 
-
+  if (loading) return <p role="status">Loading property...</p>;
+  if (error) return <p role="alert">Could not load property: {error}</p>;
   if (!property) {
     return <h1>Property not found</h1>;
   }
@@ -61,15 +60,18 @@ function PropertyDetailsPage() {
       <p className="tour-description">
     Explore this property interactively in 360° before booking an in-person viewing.
   </p>
-      <button
-        className="primary-button"
-        onClick={() => setShowTour(prev => !prev)}
-      >
-        {showTour ? "Close Virtual Tour" : "Start 360° Tour"}
-      </button>
-
-      {showTour && (
-        <VirtualTourViewer panoramas={property.panoramas} />
+      {property.panoramas.length > 0 ? (
+        <>
+          <button
+            className="primary-button"
+            onClick={() => setShowTour((prev) => !prev)}
+          >
+            {showTour ? "Close Virtual Tour" : "Start 360° Tour"}
+          </button>
+          {showTour && <VirtualTourViewer panoramas={property.panoramas} />}
+        </>
+      ) : (
+        <p>A 360° virtual tour is not yet available for this property.</p>
       )}
     </section>
 
