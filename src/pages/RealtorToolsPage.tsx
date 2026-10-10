@@ -84,7 +84,7 @@ function RealtorToolsPage() {
     try {
       const result = await draftDescription(session.accessToken, input);
       setDraft(result.draft);
-      setStatus("Draft created. Verify every claim before publishing.");
+      setStatus(result.source === "template" ? "Template draft created without an AI key. Verify all facts before publishing." : "AI-assisted draft created. Verify every claim before publishing.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to generate a draft.");
     } finally {
@@ -105,9 +105,9 @@ function RealtorToolsPage() {
     <main className="realtor-tools-page">
       <section className="realtor-tools-heading">
         <p className="section-eyebrow">LISTINGVIEW360 FOR REALTORS</p>
-        <h1>Realtor AI Tools</h1>
+        <h1>Realtor Description Tools</h1>
         <p>Create a first draft of a property description using verified listing details.
-          AI suggestions are never published automatically.</p>
+          Descriptions use locally generated templates when no AI provider is connected; nothing is published automatically.</p>
       </section>
 
       {!realtorApiConfigured ? (
@@ -199,7 +199,7 @@ function RealtorToolsPage() {
             {draft ? (
               <>
                 <textarea className="realtor-tools-output" rows={14} readOnly value={draft}
-                  aria-label="AI-generated listing draft" />
+                  aria-label="Listing description draft" />
                 <button className="secondary-button" type="button" onClick={copyDraft}>
                   Copy draft
                 </button>
