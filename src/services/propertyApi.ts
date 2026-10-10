@@ -38,6 +38,7 @@ function toProperty(property: ApiProperty): Property {
     propertyType: property.propertyType,
     yearBuilt: property.yearBuilt ?? undefined,
     image: property.images?.[0] || fallbackImage,
+    images: property.images?.length ? property.images : [fallbackImage],
     description: property.description,
     panoramas: property.panoramas ?? [],
     // The current API seed includes example inventory. Do not present it as verified MLS data.
