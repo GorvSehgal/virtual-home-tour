@@ -1451,3 +1451,24 @@ textarea.booking-input {
   background: #0b2a5b;
   color: #ffffff;
 }
+/* Explicit disclosure for fictional, non-bookable demonstration listings. */
+.property-demo-label {
+  display: inline-block;
+  background: #fff2d5;
+  color: #714300;
+  border: 1px solid #e5bd70;
+  border-radius: 8px;
+  padding: 5px 9px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+.property-demo-notice {
+  background: #fff2d5;
+  color: #664400;
+  border: 1px solid #e5bd70;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-weight: 650;
+}
