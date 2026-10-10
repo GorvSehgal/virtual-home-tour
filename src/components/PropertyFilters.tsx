@@ -1,4 +1,6 @@
 type PropertyFiltersProps = {
+    cities: string[];
+    propertyTypes: string[];
     search: string;
     city: string;
     propertyType: string;
@@ -17,7 +19,9 @@ type PropertyFiltersProps = {
     onReset: () => void;
   };
 
-function PropertyFilters({search,
+function PropertyFilters({cities,
+    propertyTypes,
+    search,
     city,
     propertyType,
     bedrooms,
@@ -50,12 +54,9 @@ return (
           onChange={e => onCityChange(e.target.value)}
         >
           <option value="all">All Cities</option>
-          <option value="Vancouver">Vancouver</option>
-          <option value="Toronto">Toronto</option>
-          <option value="Calgary">Calgary</option>
-          <option value="Ottawa">Ottawa</option>
-          <option value="Montreal">Montreal</option>
-          <option value="Kelowna">Kelowna</option>
+          {cities.map((cityName) => (
+            <option key={cityName} value={cityName}>{cityName}</option>
+          ))}
         </select>
 
         <select
@@ -64,9 +65,9 @@ return (
           onChange={e => onPropertyTypeChange(e.target.value)}
         >
           <option value="all">All Types</option>
-          <option value="Detached">Detached</option>
-          <option value="Condo">Condo</option>
-          <option value="Townhouse">Townhouse</option>
+          {propertyTypes.map((typeName) => (
+            <option key={typeName} value={typeName}>{typeName}</option>
+          ))}
         </select>
 
         <select
