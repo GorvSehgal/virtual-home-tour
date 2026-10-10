@@ -46,7 +46,7 @@ export async function realtorLogin(email: string, password: string): Promise<Rea
 
 export async function draftDescription(
   token: string, fields: DraftInput,
-): Promise<{ draft: string; model: string; needsReview: boolean }> {
+): Promise<{ draft: string; model: string; source: "template" | "ai"; needsReview: boolean }> {
   if (!url) throw new Error("The property API has not been configured.");
   const response = await fetch(`${url}/ai/listing-description`, {
     method: "POST",
@@ -56,7 +56,7 @@ export async function draftDescription(
     },
     body: JSON.stringify(fields),
   });
-  const result = await read<{ draft: string; model: string; needsReview: boolean }>(response);
+  const result = await read<{ draft: string; model: string; source: "template" | "ai"; needsReview: boolean }>(response);
   if (typeof result.draft !== "string" || result.needsReview !== true) {
     throw new Error("The server returned an invalid draft.");
   }
