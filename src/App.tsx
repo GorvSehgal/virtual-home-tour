@@ -12,6 +12,7 @@ import ContactPage from "./pages/ContactPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SeoManager from "./components/SeoManager";
+import RealtorToolsPage from "./pages/RealtorToolsPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           element={<PropertyDetailsPage />}
         />
         <Route path="/for-realtors" element={<ForRealtorsPage />} />
+        <Route path="/realtor/tools" element={<RealtorToolsPage />} />
         <Route path="/list-property" element={<ListPropertyPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
