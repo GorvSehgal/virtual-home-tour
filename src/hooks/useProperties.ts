@@ -29,36 +29,40 @@ export function useProperties() {
 }
 
 export function useProperty(id: number | undefined) {
-  const [property, setProperty] = useState<Property | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<{
+    id: number | undefined;
+    property: Property | null;
+    error: string | null;
+  }>({ id: undefined, property: null, error: null });
 
+  const validId = id !== undefined && Number.isSafeInteger(id) && id > 0;
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-    setProperty(null);
-    if (id === undefined || !Number.isSafeInteger(id) || id <= 0) {
-      setProperty(null);
-      setLoading(false);
-      return;
-    }
+    if (!validId) return;
 
     const controller = new AbortController();
     fetchPropertyById(id, controller.signal)
-      .then((result) => {
-        if (!controller.signal.aborted) setProperty(result);
+      .then((property) => {
+        if (!controller.signal.aborted) {
+          setResult({ id, property, error: null });
+        }
       })
       .catch((err: unknown) => {
         if (!controller.signal.aborted) {
-          setError(err instanceof Error ? err.message : "Unable to load property.");
+          setResult({
+            id,
+            property: null,
+            error: err instanceof Error ? err.message : "Unable to load property.",
+          });
         }
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setLoading(false);
       });
 
     return () => controller.abort();
-  }, [id]);
+  }, [id, validId]);
 
-  return { property, loading, error };
+  const matchesCurrentId = validId && result.id === id;
+  return {
+    property: matchesCurrentId ? result.property : null,
+    loading: validId && !matchesCurrentId,
+    error: matchesCurrentId ? result.error : null,
+  };
 }
