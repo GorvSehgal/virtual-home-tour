@@ -37,7 +37,7 @@ export function useProperty(id: number | undefined) {
 
   const validId = id !== undefined && Number.isSafeInteger(id) && id > 0;
   useEffect(() => {
-    if (!validId) return;
+    if (id === undefined || !validId) return;
 
     const controller = new AbortController();
     fetchPropertyById(id, controller.signal)
