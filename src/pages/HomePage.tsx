@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { properties } from "../data/properties";
+import { useProperties } from "../hooks/useProperties";
 import PropertyCard from "../components/PropertyCard";
 
 function HomePage() {
+  const { properties, loading, error } = useProperties();
   const featuredProperties = properties.slice(0, 3);
 
   return (
@@ -52,7 +53,10 @@ function HomePage() {
         </div>
 
         <div className="featured-grid">
-          {featuredProperties.map((property) => (
+          {loading && <p role="status">Loading featured properties...</p>}
+          {error && <p role="alert">Could not load properties: {error}</p>}
+          {!loading && !error && featuredProperties.length === 0 && <p>No properties available yet.</p>}
+          {!loading && !error && featuredProperties.map((property) => (
             <PropertyCard
               key={property.id}
               property={property}
