@@ -34,6 +34,9 @@ export function useProperty(id: number | undefined) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    setLoading(true);
+    setError(null);
+    setProperty(null);
     if (id === undefined || !Number.isSafeInteger(id) || id <= 0) {
       setProperty(null);
       setLoading(false);
