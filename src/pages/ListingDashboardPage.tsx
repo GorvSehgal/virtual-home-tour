@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
-import { realtorApiConfigured, realtorLogin } from "../services/realtorApi";
-import type { RealtorSession } from "../services/realtorApi";
+import { realtorApiConfigured, realtorLogin, realtorSignup, pendingRealtors, reviewRealtorAccount } from "../services/realtorApi";
+import type { RealtorSession, PendingRealtor } from "../services/realtorApi";
 import { listManaged, reviewListing, saveListing, uploadPhoto } from "../services/listingManagerApi";
 import type { ManagedListing, SaveListing } from "../services/listingManagerApi";
 import "./ListingDashboardPage.css";
@@ -61,8 +61,13 @@ function toListing(fields: Fields, images: string[]): SaveListing {
   };
 }
 
-export default function ListingDashboardPage() {
+export default function ListingDashboardPage({ defaultAuthMode = "login" }: { defaultAuthMode?: "login" | "signup" }) {
   const [session, setSession] = useState<RealtorSession | null>(null);
+  const [authMode, setAuthMode] = useState<"login" | "signup">(defaultAuthMode);
+  const [fullName, setFullName] = useState("");
+  const [brokerage, setBrokerage] = useState("");
+  const [licenseNumber, setLicenseNumber] = useState("");
+  const [pendingAccounts, setPendingAccounts] = useState<PendingRealtor[]>([]);
   const [email, setEmail] = useState(""), [password, setPassword] = useState("");
   const [listings, setListings] = useState<ManagedListing[]>([]);
   const [fields, setFields] = useState<Fields>(empty);
@@ -83,7 +88,14 @@ export default function ListingDashboardPage() {
   function change(name: keyof Fields, value: string) { setFields((old) => ({ ...old, [name]: value })); }
   async function refresh(signedIn: RealtorSession) {
     setLoading(true);
-    try { setListings(await listManaged(signedIn)); }
+    try {
+      const [items, accounts] = await Promise.all([
+        listManaged(signedIn),
+        signedIn.user.role === "admin" ? pendingRealtors(signedIn) : Promise.resolve([]),
+      ]);
+      setListings(items);
+      setPendingAccounts(accounts);
+    }
     catch (e) { setError(e instanceof Error ? e.message : "Unable to load listings."); }
     finally { setLoading(false); }
   }
@@ -97,7 +109,32 @@ export default function ListingDashboardPage() {
     } catch (e) { setError(e instanceof Error ? e.message : "Unable to sign in."); }
     finally { setWorking(false); }
   }
-  function logout() { setSession(null); setListings([]); resetForm(); setError(""); setNotice(""); }
+  async function signup(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault(); if (working) return;
+    setError(""); setNotice(""); setWorking(true);
+    try {
+      const result = await realtorSignup({
+        fullName: fullName.trim(), email: email.trim(), password,
+        ...(brokerage.trim() ? { brokerage: brokerage.trim() } : {}),
+        ...(licenseNumber.trim() ? { licenseNumber: licenseNumber.trim() } : {}),
+      });
+      setPassword("");
+      setAuthMode("login");
+      setNotice(result.message);
+    } catch (e) { setError(e instanceof Error ? e.message : "Unable to create account."); }
+    finally { setWorking(false); }
+  }
+  async function reviewAccount(id: number, status: "approved" | "rejected") {
+    if (!session || session.user.role !== "admin" || working) return;
+    setWorking(true); setError(""); setNotice("");
+    try {
+      await reviewRealtorAccount(session, id, status);
+      setNotice(`Realtor application #${id} ${status}.`);
+      await refresh(session);
+    } catch (e) { setError(e instanceof Error ? e.message : "Unable to review account."); }
+    finally { setWorking(false); }
+  }
+  function logout() { setSession(null); setListings([]); setPendingAccounts([]); resetForm(); setError(""); setNotice(""); }
   function addPhotos(event: ChangeEvent<HTMLInputElement>) {
     const files = Array.from(event.target.files ?? []);
     event.target.value = ""; setError("");
@@ -164,7 +201,7 @@ export default function ListingDashboardPage() {
     finally { setWorking(false); }
   }
   return (
-    <main className="listing-dashboard">
+    <main className={`listing-dashboard ${!session ? "listing-auth-page" : ""}`}>
       <header className="listing-dashboard-header">
         <p className="section-eyebrow">LISTINGVIEW360</p>
         <h1>Listing management</h1>
@@ -173,14 +210,48 @@ export default function ListingDashboardPage() {
       {!realtorApiConfigured ? (
         <p role="alert" className="listing-dashboard-error">The property API is not connected. Set VITE_API_BASE_URL to the API HTTPS URL ending in /api/v1.</p>
       ) : !session ? (
-        <form className="listing-dashboard-card listing-login" onSubmit={login}>
-          <h2>Realtor / Admin sign in</h2>
-          <p>Accounts are provisioned privately by ListingView360. Public registration is not available.</p>
-          <label htmlFor="login-email">Email</label>
+        <form className="listing-dashboard-card listing-login" onSubmit={authMode === "login" ? login : signup}>
+          <div className="listing-auth-switch" role="group" aria-label="Account access">
+            <button type="button" className={authMode === "login" ? "active" : ""} aria-pressed={authMode === "login"}
+              onClick={() => { setAuthMode("login"); setError(""); setNotice(""); }} disabled={working}>Sign in</button>
+            <button type="button" className={authMode === "signup" ? "active" : ""} aria-pressed={authMode === "signup"}
+              onClick={() => { setAuthMode("signup"); setError(""); setNotice(""); }} disabled={working}>Realtor sign up</button>
+          </div>
+          <h2>{authMode === "login" ? "Realtor / Admin sign in" : "Create a realtor account"}</h2>
+          <p>{authMode === "login"
+            ? "Sign in to manage your listings and approvals."
+            : "Join ListingView360 for free. Your registration will be reviewed by an administrator before you can upload listings."}</p>
+          {authMode === "signup" && (
+            <>
+              <label htmlFor="signup-name">Full name *</label>
+              <input id="signup-name" type="text" autoComplete="name" minLength={2} maxLength={100} required value={fullName}
+                onChange={(e) => setFullName(e.target.value)} />
+            </>
+          )}
+          <label htmlFor="login-email">Email address *</label>
           <input id="login-email" type="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} />
-          <label htmlFor="login-password">Password</label>
-          <input id="login-password" type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
-          <button type="submit" className="primary-button" disabled={working}>{working ? "Signing in..." : "Sign in"}</button>
+          <label htmlFor="login-password">{authMode === "login" ? "Password *" : "Create password (12+ characters) *"}</label>
+          <input id="login-password" type="password" autoComplete={authMode === "login" ? "current-password" : "new-password"}
+            minLength={authMode === "signup" ? 12 : 1} maxLength={128} required value={password} onChange={(e) => setPassword(e.target.value)} />
+          {authMode === "signup" && (
+            <>
+              <label htmlFor="signup-brokerage">Brokerage (optional)</label>
+              <input id="signup-brokerage" type="text" maxLength={120} value={brokerage} onChange={(e) => setBrokerage(e.target.value)} />
+              <label htmlFor="signup-license">Real estate licence / registration number (optional)</label>
+              <input id="signup-license" type="text" maxLength={64} value={licenseNumber} onChange={(e) => setLicenseNumber(e.target.value)} />
+              <p className="listing-signup-note">Only verified and approved realtor accounts can publish property listings. Registration does not grant admin access.</p>
+            </>
+          )}
+          <button type="submit" className="primary-button" disabled={working}>
+            {working ? "Please wait..." : authMode === "login" ? "Sign in" : "Request realtor account"}
+          </button>
+          <p className="listing-auth-bottom">
+            {authMode === "login" ? "New to ListingView360?" : "Already have an account?"}
+            {" "}
+            <button type="button" disabled={working} onClick={() => { setAuthMode(authMode === "login" ? "signup" : "login"); setError(""); setNotice(""); }}>
+              {authMode === "login" ? "Sign up for free" : "Sign in"}
+            </button>
+          </p>
         </form>
       ) : (
         <>
@@ -188,6 +259,31 @@ export default function ListingDashboardPage() {
             <p>Signed in as <strong>{session.user.email}</strong> ({session.user.role})</p>
             <button className="secondary-button" type="button" onClick={logout}>Sign out</button>
           </div>
+          {session.user.role === "admin" && (
+            <section className="listing-dashboard-card listing-account-queue" aria-label="Pending realtor account registrations">
+              <h2>Realtor signup requests ({pendingAccounts.length})</h2>
+              <p>Verify the applicant's identity, brokerage and licence before approving their access.</p>
+              {loading && <p role="status">Loading signup requests...</p>}
+              {!loading && pendingAccounts.length === 0 && <p>No pending realtor applications.</p>}
+              {pendingAccounts.map((account) => (
+                <article key={account.id} className="listing-account-item">
+                  <div>
+                    <h3>{account.fullName || "Realtor applicant"}</h3>
+                    <p>{account.email}</p>
+                    {account.brokerage && <p>Brokerage: {account.brokerage}</p>}
+                    {account.licenseNumber && <p>Licence / registration: {account.licenseNumber}</p>}
+                    <p>Applied: {new Date(account.createdAt).toLocaleDateString("en-CA")}</p>
+                  </div>
+                  <div className="listing-queue-actions">
+                    <button type="button" className="primary-button" disabled={working}
+                      onClick={() => reviewAccount(account.id, "approved")}>Approve account</button>
+                    <button type="button" className="secondary-button" disabled={working}
+                      onClick={() => reviewAccount(account.id, "rejected")}>Reject</button>
+                  </div>
+                </article>
+              ))}
+            </section>
+          )}
           <div className="listing-dashboard-layout">
             <form id="listing-form" className="listing-dashboard-card listing-editor" onSubmit={submit}>
               <h2>{editingId ? `Edit listing #${editingId}` : "Add a property"}</h2>

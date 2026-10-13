@@ -33,6 +33,7 @@ function App() {
         <Route path="/realtor/tools" element={<RealtorToolsPage />} />
         <Route path="/list-property" element={<ListingDashboardPage />} />
         <Route path="/dashboard" element={<ListingDashboardPage />} />
+        <Route path="/signup" element={<ListingDashboardPage defaultAuthMode="signup" />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="*" element={<NotFoundPage />} />
