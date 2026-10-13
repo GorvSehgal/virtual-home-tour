@@ -72,3 +72,10 @@
 .listing-metrics-details table{border-collapse:collapse;width:100%}
 .listing-metrics-details th,.listing-metrics-details td{padding:10px;text-align:left;border-bottom:1px solid #dce7f0}
 @media(max-width:650px){.listing-lead-stats{grid-template-columns:repeat(2,1fr)}.listing-lead-item{flex-direction:column}}
+
+.listing-password-panel{margin-bottom:24px;max-width:640px}
+.listing-password-panel summary{font-weight:700;cursor:pointer}
+.listing-password-form{display:flex;flex-direction:column;gap:10px;margin-top:15px}
+.listing-password-form label{font-weight:650;font-size:.9rem}
+.listing-password-form input{padding:11px;border:1px solid #b9c9d6;border-radius:8px;font:inherit;max-width:410px}
+.listing-password-form .primary-button{align-self:flex-start}

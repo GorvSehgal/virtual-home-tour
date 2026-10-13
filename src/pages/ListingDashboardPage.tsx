@@ -6,6 +6,7 @@ import { listManaged, reviewListing, saveListing, uploadPhoto } from "../service
 import type { ManagedListing, SaveListing } from "../services/listingManagerApi";
 import "./ListingDashboardPage.css";
 import LeadsPanel from "../components/LeadsPanel";
+import AccountSecurityPanel from "../components/AccountSecurityPanel";
 
 type Fields = {
   title: string; address: string; city: string; province: string; postalCode: string;
@@ -286,6 +287,7 @@ export default function ListingDashboardPage({ defaultAuthMode = "login" }: { de
             <button className="secondary-button" type="button" onClick={logout}>Sign out</button>
           </div>
           <LeadsPanel session={session} />
+          <AccountSecurityPanel session={session} />
           {session.user.role === "admin" && (
             <section className="listing-dashboard-card listing-account-queue" aria-label="Pending realtor account registrations">
               <h2>Realtor signup requests ({pendingAccounts.length})</h2>
