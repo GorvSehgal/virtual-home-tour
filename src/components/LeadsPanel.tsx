@@ -18,7 +18,18 @@ export default function LeadsPanel({ session }: { session: RealtorSession }) {
     } catch(e) { setError(e instanceof Error ? e.message : "Could not load leads."); }
     finally { setLoading(false); }
   }
-  useEffect(() => { void refresh(); }, [session.accessToken]);
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([listViewingLeads(session), listPropertyInsights(session)])
+      .then(([items, insights]) => {
+        if (!cancelled) { setLeads(items); setMetrics(insights); }
+      })
+      .catch(e => {
+        if (!cancelled) setError(e instanceof Error ? e.message : "Could not load leads.");
+      })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [session]);
   async function changeStatus(id: number, status: ViewingLead["status"]) {
     setSavingId(id); setError("");
     try { await updateLead(session,id,status); setLeads(items => items.map(l => l.id===id?{...l,status}:l)); }
