@@ -26,6 +26,16 @@ function PrivacyPage() {
             requests, and manage viewing requests.
           </p>
   
+          <h2>Viewing Requests and Lead Handling</h2>
+          <p>When you request a viewing, ListingView360 saves your submitted name,
+            email, phone number, preferred date and message in its property database.
+            The responsible listing Realtor and ListingView360 administrators can
+            access your request for follow-up. It is not a confirmed appointment.
+          </p>
+          <p>We also count aggregate property page views and 360° tour starts.
+            These counters are not meant to identify visitors.
+            To request access, correction or deletion of your information,
+            contact the email address below.</p>
           <h2>Third-Party Services</h2>
           <p>
             We may use third-party services to host the website, process form

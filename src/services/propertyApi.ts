@@ -75,3 +75,14 @@ export async function fetchPropertyById(id: number, signal: AbortSignal): Promis
   }
   return toProperty(data);
 }
+
+/** Anonymous aggregate analytics; never blocks a property page if offline. */
+export async function recordPropertyEvent(id: number, event: "view" | "tour_start"): Promise<void> {
+  if (!apiBaseUrl || !Number.isSafeInteger(id)) return;
+  try {
+    await fetch(`${apiBaseUrl}/properties/${id}/metrics`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event }), keepalive: true,
+    });
+  } catch { /* analytics must not block property browsing */ }
+}

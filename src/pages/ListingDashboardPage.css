@@ -53,3 +53,29 @@
 .listing-account-item h3{margin:0 0 8px}
 .listing-account-item p{margin:4px 0;color:#51657a;font-size:.9rem}
 @media(max-width:600px){.listing-account-item{flex-direction:column;align-items:flex-start}.listing-auth-switch button{font-size:.85rem}}
+
+.listing-leads-panel{margin-bottom:24px}
+.listing-leads-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;flex-wrap:wrap}
+.listing-lead-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.listing-lead-stats>div{background:#f1f6fc;border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:5px}
+.listing-lead-stats strong{font-size:1.5rem;color:#173d69}
+.listing-lead-stats span,.listing-insights-note{font-size:.83rem;color:#59697b}
+.listing-lead-item{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-top:1px solid #e0e9f3;padding:16px 0}
+.listing-lead-item h3{font-size:1rem;margin:0 0 7px}
+.listing-lead-item p{font-size:.9rem;margin:5px 0;overflow-wrap:anywhere}
+.listing-lead-item a{color:#1459a5}
+.listing-lead-status{min-width:130px;display:flex;flex-direction:column;gap:6px;font-weight:650;font-size:.86rem}
+.listing-lead-status select{padding:9px;border-radius:7px;border:1px solid #b8cadd;background:#fff}
+.listing-metrics-details{margin-top:20px}
+.listing-metrics-details summary{cursor:pointer;font-weight:650}
+.listing-metrics-table-wrap{overflow-x:auto;margin-top:12px}
+.listing-metrics-details table{border-collapse:collapse;width:100%}
+.listing-metrics-details th,.listing-metrics-details td{padding:10px;text-align:left;border-bottom:1px solid #dce7f0}
+@media(max-width:650px){.listing-lead-stats{grid-template-columns:repeat(2,1fr)}.listing-lead-item{flex-direction:column}}
+
+.listing-password-panel{margin-bottom:24px;max-width:640px}
+.listing-password-panel summary{font-weight:700;cursor:pointer}
+.listing-password-form{display:flex;flex-direction:column;gap:10px;margin-top:15px}
+.listing-password-form label{font-weight:650;font-size:.9rem}
+.listing-password-form input{padding:11px;border:1px solid #b9c9d6;border-radius:8px;font:inherit;max-width:410px}
+.listing-password-form .primary-button{align-self:flex-start}
