@@ -1484,3 +1484,28 @@ textarea.booking-input {
 .demo-prompt { margin: -10px 0 24px; line-height: 1.6; color: #475569; }
 .demo-prompt a { color: #1d4ed8; text-decoration: underline; font-weight: 600; }
 @media (max-width: 768px) { .demo-notice { margin: 22px 16px 0; } .demo-listings { padding: 36px 16px 48px; } .demo-bottom-cta { margin: 0 16px 48px; padding: 28px 20px; } .demo-actions { flex-direction: column; } }
+
+
+/* Empty live inventory: provide a clearly separated interactive demo catalog. */
+.properties-demo-banner{display:flex;justify-content:space-between;align-items:center;gap:22px;padding:22px 24px;border:1px solid #bad5ef;background:#edf5ff;border-radius:14px;margin-bottom:26px;color:#17365c}
+.properties-demo-banner strong{display:block;font-size:1rem}
+.properties-demo-banner p{margin:8px 0 0;line-height:1.55;color:#3f5875}
+.properties-demo-banner .secondary-button{flex-shrink:0;border-color:#95bce4}
+.properties-demo-footer{color:#57677a;line-height:1.6;margin:26px 0 0}
+.properties-demo-footer a{color:#1459a5;text-decoration:underline;font-weight:600}
+.properties-empty-state{grid-column:1/-1;text-align:center;padding:42px 20px;background:#fff;border:1px solid #e2e8f0;border-radius:14px}
+.properties-empty-state h2{margin:0 0 10px;font-size:1.4rem}
+.properties-empty-state p{color:#64748b}
+.properties-empty-state button{margin-top:10px;cursor:pointer}
+.properties-mobile-filter-toggle{display:none}
+@media(max-width:700px){
+  .properties-page{padding:32px 16px 65px}
+  .properties-header{margin-bottom:22px}
+  .properties-header h1{font-size:clamp(30px,8vw,38px)}
+  .properties-demo-banner{flex-direction:column;align-items:stretch;padding:18px 16px;gap:16px}
+  .properties-demo-banner .secondary-button{text-align:center}
+  .properties-mobile-filter-toggle{display:block;width:100%;padding:15px 18px;background:#fff;border:1px solid #cbd5e1;border-radius:10px;color:#17304a;font:inherit;font-weight:650;text-align:left;cursor:pointer}
+  .properties-filter-wrapper:not(.open){display:none}
+  .properties-filter-wrapper.open .filters-panel{margin-top:12px}
+  .results-toolbar{margin:22px 0}
+}
