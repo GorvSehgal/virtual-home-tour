@@ -36,3 +36,20 @@
 .listing-dashboard-footnote{margin-top:26px;color:#59697b;font-size:.88rem}
 @media(max-width:880px){.listing-dashboard-layout{grid-template-columns:1fr}}
 @media(max-width:550px){.listing-dashboard{padding:32px 16px 70px}.listing-input-pair{grid-template-columns:1fr}.listing-dashboard-card{padding:17px}.listing-queue-item{grid-template-columns:80px 1fr}.listing-queue-item>img{width:80px;height:86px}}
+
+/* Center both sign-in and self-registration consistently. */
+.listing-auth-page .listing-dashboard-header{max-width:630px;margin:0 auto 28px;text-align:center}
+.listing-auth-page .listing-login{width:100%;max-width:480px;box-sizing:border-box;margin:0 auto}
+.listing-auth-switch{display:grid;grid-template-columns:1fr 1fr;gap:5px;background:#eef3fa;border-radius:10px;padding:5px}
+.listing-auth-switch button{font:inherit;font-weight:650;color:#244564;border:0;border-radius:8px;background:transparent;padding:11px 9px;cursor:pointer}
+.listing-auth-switch button.active{background:#fff;color:#0d3468;box-shadow:0 1px 6px #0f172a17}
+.listing-auth-switch button:disabled,.listing-auth-bottom button:disabled{opacity:.55;cursor:wait}
+.listing-login .primary-button{width:100%;margin-top:6px;text-align:center}
+.listing-login .listing-signup-note{font-size:.85rem;color:#59697b;margin:0}
+.listing-auth-bottom{text-align:center;font-size:.91rem;margin:4px 0 0}
+.listing-auth-bottom button{font:inherit;font-weight:700;border:0;background:none;color:#1459a5;cursor:pointer;text-decoration:underline}
+.listing-account-queue{margin-bottom:24px}
+.listing-account-item{display:flex;justify-content:space-between;align-items:center;gap:22px;padding:16px 0;border-top:1px solid #e3eaf1}
+.listing-account-item h3{margin:0 0 8px}
+.listing-account-item p{margin:4px 0;color:#51657a;font-size:.9rem}
+@media(max-width:600px){.listing-account-item{flex-direction:column;align-items:flex-start}.listing-auth-switch button{font-size:.85rem}}

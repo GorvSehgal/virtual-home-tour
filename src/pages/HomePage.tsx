@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import { useProperties } from "../hooks/useProperties";
 import PropertyCard from "../components/PropertyCard";
+import { properties as exampleProperties } from "../data/properties";
 
 function HomePage() {
   const { properties, loading, error } = useProperties();
   const featuredProperties = properties.slice(0, 3);
+  // The public API intentionally returns approved real listings only.
+  // Until a realtor listing is approved, show clearly labeled sample cards
+  // rather than an empty homepage or a text-only link to the demo.
+  const showSamples = !loading && (Boolean(error) || featuredProperties.length === 0);
+  const visibleProperties = showSamples ? exampleProperties.slice(0, 3) : featuredProperties;
 
   return (
     <main>
@@ -44,24 +50,29 @@ function HomePage() {
         <div className="section-heading">
           <div>
             <p className="section-eyebrow">EXPLORE HOMES</p>
-            <h2>Featured Properties</h2>
+            <h2>{showSamples ? "Explore Sample Properties" : "Featured Properties"}</h2>
           </div>
 
-          <Link to="/properties" className="view-all-link">
-            View all properties →
+          <Link to={showSamples ? "/demo" : "/properties"} className="view-all-link">
+            {showSamples ? "View all six sample homes →" : "View all properties →"}
           </Link>
         </div>
 
-        <p className="demo-prompt">Want to experience the platform first? <Link to="/demo">Explore six fictional demo listings with interactive 360° tours →</Link></p>
+        {showSamples && (
+          <p className="demo-prompt" role="note">
+            <strong>Interactive demos only.</strong> These sample homes are fictional, not for sale or rent.
+            Approved realtor listings will appear here as they become available.
+            {error && " Live inventory is temporarily unavailable."}
+          </p>
+        )}
 
         <div className="featured-grid">
           {loading && <p role="status">Loading featured properties...</p>}
-          {error && <p role="alert">Could not load properties: {error}</p>}
-          {!loading && !error && featuredProperties.length === 0 && <p>No properties available yet.</p>}
-          {!loading && !error && featuredProperties.map((property) => (
+          {!loading && visibleProperties.map((property) => (
             <PropertyCard
-              key={property.id}
+              key={showSamples ? `demo-${property.id}` : property.id}
               property={property}
+              detailsBasePath={showSamples ? "/demo" : "/properties"}
             />
           ))}
         </div>
