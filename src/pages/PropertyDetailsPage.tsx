@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useProperty } from "../hooks/useProperties";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { recordPropertyEvent } from "../services/propertyApi";
 import VirtualTourViewer from "../components/VirtualTourViewer";
 import BookingForm from "../components/BookingForm";
 import PropertyImageGallery from "../components/PropertyImageGallery";
@@ -14,6 +15,9 @@ function PropertyDetailsPage({ demoMode = false }: { demoMode?: boolean }) {
   const requestedId = id ? Number(id) : undefined;
   // Demo data is always local; a configured API must never hide demonstration tours.
   const { property: apiProperty, loading, error } = useProperty(demoMode ? undefined : requestedId);
+  useEffect(() => {
+    if (!demoMode && apiProperty?.id) void recordPropertyEvent(apiProperty.id, "view");
+  }, [demoMode, apiProperty?.id]);
   const property = demoMode
     ? demoProperties.find((item) => item.id === requestedId) ?? null
     : apiProperty;
@@ -77,7 +81,10 @@ function PropertyDetailsPage({ demoMode = false }: { demoMode?: boolean }) {
         <>
           <button
             className="primary-button"
-            onClick={() => setShowTour((prev) => !prev)}
+            onClick={() => {
+              if (!showTour && !demoMode) void recordPropertyEvent(property.id, "tour_start");
+              setShowTour((prev) => !prev);
+            }}
           >
             {showTour ? "Close Virtual Tour" : "Start 360° Tour"}
           </button>
@@ -93,7 +100,7 @@ function PropertyDetailsPage({ demoMode = false }: { demoMode?: boolean }) {
       {property.isDemo ? (
         <p>This is a fictional demonstration property; viewings cannot be booked.</p>
       ) : (
-        <BookingForm />
+        <BookingForm propertyId={property.id} propertyTitle={property.title} />
       )}
     </aside>
   </div>

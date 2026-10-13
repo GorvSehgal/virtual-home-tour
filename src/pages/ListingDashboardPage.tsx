@@ -5,6 +5,7 @@ import type { RealtorSession, PendingRealtor } from "../services/realtorApi";
 import { listManaged, reviewListing, saveListing, uploadPhoto } from "../services/listingManagerApi";
 import type { ManagedListing, SaveListing } from "../services/listingManagerApi";
 import "./ListingDashboardPage.css";
+import LeadsPanel from "../components/LeadsPanel";
 
 type Fields = {
   title: string; address: string; city: string; province: string; postalCode: string;
@@ -147,6 +148,31 @@ export default function ListingDashboardPage({ defaultAuthMode = "login" }: { de
     });
     setPhotos((previous) => [...previous, ...added]);
   }
+  async function addPanoramas(event: ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(event.target.files ?? []);
+    event.target.value = "";
+    if (!session || working || files.length === 0) return;
+    const bad = files.find(file => !["image/jpeg","image/png","image/webp"].includes(file.type) ||
+      file.size===0 || file.size>5*1024*1024);
+    if (bad) { setError(`${bad.name}: use JPG, PNG or WebP under 5 MB.`); return; }
+    const current = fields.panoramas.split("\n").filter(line=>line.trim()).length;
+    if(current + files.length > 8){setError("Maximum 8 room panoramas per listing.");return;}
+    setWorking(true);setError("");setNotice("");
+    try {
+      const added: string[] = [];
+      for (const file of files) {
+        const url=await uploadPhoto(session,file);
+        const roomName=file.name.replace(/\.[^.]+$/, "").replace(/[|\r\n]/g," ").trim() || "Room";
+        added.push(`${roomName} | ${url}`);
+      }
+      setFields(previous => ({
+        ...previous,
+        panoramas: [previous.panoramas.trim(), ...added].filter(Boolean).join("\n"),
+      }));
+      setNotice(`${added.length} panorama image(s) uploaded. Check the room labels before submitting.`);
+    } catch(e){setError(e instanceof Error?e.message:"Unable to upload panoramas.");}
+    finally{setWorking(false);}
+  }
   function removePhoto(key: number) {
     const removed = photos.find((p) => p.key === key);
     if (removed?.file) { URL.revokeObjectURL(removed.src); objectUrls.current.delete(removed.src); }
@@ -259,6 +285,7 @@ export default function ListingDashboardPage({ defaultAuthMode = "login" }: { de
             <p>Signed in as <strong>{session.user.email}</strong> ({session.user.role})</p>
             <button className="secondary-button" type="button" onClick={logout}>Sign out</button>
           </div>
+          <LeadsPanel session={session} />
           {session.user.role === "admin" && (
             <section className="listing-dashboard-card listing-account-queue" aria-label="Pending realtor account registrations">
               <h2>Realtor signup requests ({pendingAccounts.length})</h2>
@@ -335,6 +362,9 @@ export default function ListingDashboardPage({ defaultAuthMode = "login" }: { de
                   ))}
                 </div>}
               </fieldset>
+              <label htmlFor="panorama-file-upload">Upload 360° room panoramas (optional, up to 8 JPG/PNG/WebP files, 5 MB each)</label>
+              <input id="panorama-file-upload" type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={addPanoramas} disabled={working} />
+              <p>Use equirectangular 360° photos (typically 2:1 aspect ratio). Ordinary photos will not display as full panoramas.</p>
               <label>Optional 360° panoramas (one per line: Room | https://...jpg)
                 <textarea rows={3} value={fields.panoramas} onChange={(e) => change("panoramas", e.target.value)} placeholder="Living Room | https://example.com/360.jpg" />
               </label>
