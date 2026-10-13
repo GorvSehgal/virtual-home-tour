@@ -50,11 +50,17 @@ function Navbar() {
           </Link>
 
           <Link
-            to="/list-property"
+            to="/dashboard"
+            onClick={closeMenu}
+          >
+            Realtor Login
+          </Link>
+          <Link
+            to="/signup"
             className="nav-cta"
             onClick={closeMenu}
           >
-            List Your Property
+            Realtor Sign Up
           </Link>
         </nav>
       </div>

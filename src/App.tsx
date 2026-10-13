@@ -7,7 +7,7 @@ import Navbar from "./components/Navbar";
 import "./App.css";
 import Footer from "./components/Footer";
 import ForRealtorsPage from "./pages/ForRealtorsPage";
-import ListPropertyPage from "./pages/ListPropertyPage";
+import ListingDashboardPage from "./pages/ListingDashboardPage";
 import ContactPage from "./pages/ContactPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -31,7 +31,9 @@ function App() {
         />
         <Route path="/for-realtors" element={<ForRealtorsPage />} />
         <Route path="/realtor/tools" element={<RealtorToolsPage />} />
-        <Route path="/list-property" element={<ListPropertyPage />} />
+        <Route path="/list-property" element={<ListingDashboardPage />} />
+        <Route path="/dashboard" element={<ListingDashboardPage />} />
+        <Route path="/signup" element={<ListingDashboardPage defaultAuthMode="signup" />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="*" element={<NotFoundPage />} />

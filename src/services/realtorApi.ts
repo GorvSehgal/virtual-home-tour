@@ -62,3 +62,43 @@ export async function draftDescription(
   }
   return result;
 }
+
+
+export type PendingRealtor = {
+  id: number; email: string; fullName: string | null;
+  brokerage: string | null; licenseNumber: string | null; createdAt: string;
+};
+
+export async function realtorSignup(fields: {
+  fullName: string; email: string; password: string;
+  brokerage?: string; licenseNumber?: string;
+}): Promise<{ message: string }> {
+  if (!url) throw new Error("The property API has not been configured.");
+  const response = await fetch(`${url}/auth/signup`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(fields),
+  });
+  return read<{ message: string }>(response);
+}
+
+export async function pendingRealtors(session: RealtorSession): Promise<PendingRealtor[]> {
+  if (!url) throw new Error("The property API has not been configured.");
+  const response = await fetch(`${url}/auth/realtors/pending`, {
+    headers: { Authorization: `Bearer ${session.accessToken}` },
+  });
+  return read<PendingRealtor[]>(response);
+}
+
+export async function reviewRealtorAccount(
+  session: RealtorSession, id: number, status: "approved" | "rejected",
+): Promise<{ id: number; approvalStatus: string }> {
+  if (session.user.role !== "admin") throw new Error("Only administrators can approve realtor accounts.");
+  if (!url) throw new Error("The property API has not been configured.");
+  const response = await fetch(`${url}/auth/realtors/${id}/review`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.accessToken}` },
+    body: JSON.stringify({ status }),
+  });
+  return read<{ id: number; approvalStatus: string }>(response);
+}

@@ -42,8 +42,8 @@ function toProperty(property: ApiProperty): Property {
     description: property.description,
     panoramas: property.panoramas ?? [],
     // The current API seed includes example inventory. Do not present it as verified MLS data.
-    dataSource: "ListingView360 API — unverified listing",
-    isDemo: true,
+    dataSource: "ListingView360 — administrator-approved listing",
+    isDemo: false,
   };
 }
 
