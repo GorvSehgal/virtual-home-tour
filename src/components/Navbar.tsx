@@ -54,7 +54,7 @@ function Navbar() {
             className="nav-cta"
             onClick={closeMenu}
           >
-            List Your Property
+            Realtor Dashboard
           </Link>
         </nav>
       </div>
