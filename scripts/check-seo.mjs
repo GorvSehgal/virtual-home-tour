@@ -14,7 +14,7 @@ const pages = [
 
 for (const [path, title] of pages) {
   const html = await readFile(join(output, path + ".html"), "utf8");
-  assert.ok(html.includes("<title>" + title), "Missing page title for " + path);
+  assert.ok(html.includes("<title>" + title.replaceAll("&", "&amp;")), "Missing page title for " + path);
   assert.ok(html.includes('rel="canonical" href="' + base + "/" + path + '"'), "Wrong canonical for " + path);
   assert.ok(html.includes('property="og:url" content="' + base + "/" + path + '"'), "Wrong OG URL for " + path);
   assert.ok(html.includes('name="description"'), "Missing description for " + path);
