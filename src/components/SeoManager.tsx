@@ -181,22 +181,16 @@ function getSeoConfig(pathname: string): SeoConfig {
     };
   }
 
+  // Numeric API listing IDs may overlap local fictional demo IDs.
+  // Keep detail routes out of the index until the approved API listing loads.
   const propertyMatch = normalizedPath.match(/^\/properties\/(\d+)$/);
-
   if (propertyMatch) {
-    const property = properties.find(
-      (item) => item.id === Number(propertyMatch[1])
-    );
-
-    if (property) {
-      return {
-        title: `${property.title} in ${property.city}, ${property.province} | ListingView360`,
-        description: `${property.description} Explore the property with a 360° virtual tour and request an in-person viewing.`,
-        path: normalizedPath,
-        noIndex: property.isDemo,
-        image: property.image,
-      };
-    }
+    return {
+      title: "Property Details | ListingView360",
+      description: "Explore an approved Canadian property listing on ListingView360.",
+      path: normalizedPath,
+      noIndex: true,
+    };
   }
 
   return {
@@ -207,41 +201,48 @@ function getSeoConfig(pathname: string): SeoConfig {
   };
 }
 
+export function applyDynamicSeo(config: SeoConfig) {
+  applySeoConfig(config);
+}
+
+function applySeoConfig(config: SeoConfig) {
+  const canonicalUrl = new URL(config.path, SITE_URL).toString();
+  const robots = config.noIndex
+    ? "noindex, nofollow"
+    : "index, follow, max-image-preview:large";
+
+  document.title = config.title;
+  document.documentElement.lang = "en-CA";
+
+  upsertMeta("name", "description", config.description);
+  upsertMeta("name", "robots", robots);
+  upsertMeta("property", "og:title", config.title);
+  upsertMeta("property", "og:description", config.description);
+  upsertMeta("property", "og:url", canonicalUrl);
+  upsertMeta("property", "og:site_name", SITE_NAME);
+  upsertMeta("property", "og:type", "website");
+  upsertMeta("name", "twitter:card", "summary");
+  upsertMeta("name", "twitter:title", config.title);
+  upsertMeta("name", "twitter:description", config.description);
+
+  if (config.image) {
+    const imageUrl = new URL(config.image, SITE_URL).toString();
+    upsertMeta("property", "og:image", imageUrl);
+    upsertMeta("name", "twitter:image", imageUrl);
+  } else {
+    document.head.querySelector('meta[property="og:image"]')?.remove();
+    document.head.querySelector('meta[name="twitter:image"]')?.remove();
+  }
+
+  upsertCanonical(canonicalUrl);
+  setStructuredData(config.structuredData);
+}
+
 function SeoManager() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const config = getSeoConfig(pathname);
-    const canonicalUrl = new URL(config.path, SITE_URL).toString();
-    const robots = config.noIndex
-      ? "noindex, nofollow"
-      : "index, follow, max-image-preview:large";
-
-    document.title = config.title;
-    document.documentElement.lang = "en-CA";
-
-    upsertMeta("name", "description", config.description);
-    upsertMeta("name", "robots", robots);
-    upsertMeta("property", "og:title", config.title);
-    upsertMeta("property", "og:description", config.description);
-    upsertMeta("property", "og:url", canonicalUrl);
-    upsertMeta("property", "og:site_name", SITE_NAME);
-    upsertMeta("property", "og:type", "website");
-    upsertMeta("name", "twitter:card", "summary");
-    upsertMeta("name", "twitter:title", config.title);
-    upsertMeta("name", "twitter:description", config.description);
-
-    if (config.image) {
-      const imageUrl = new URL(config.image, SITE_URL).toString();
-      upsertMeta("property", "og:image", imageUrl);
-      upsertMeta("name", "twitter:image", imageUrl);
-    } else {
-      document.head.querySelector('meta[property="og:image"]')?.remove();
-      document.head.querySelector('meta[name="twitter:image"]')?.remove();
-    }
-
-    upsertCanonical(canonicalUrl);
-    setStructuredData(config.structuredData);
+    applySeoConfig(getSeoConfig(pathname));
   }, [pathname]);
 
   return null;
