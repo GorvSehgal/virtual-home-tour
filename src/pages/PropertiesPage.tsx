@@ -25,7 +25,6 @@ function PropertiesPage() {
   const [pageNumber, setPageNumber] = useState(1);
   const { isFavorite, toggleFavorite, count: favoriteCount } = useFavorites();
   const pageSize = 6;
-  useEffect(() => { setPageNumber(1); }, [search, city, propertyType, bedrooms, minPrice, maxPrice, sortBy, favoritesOnly]);
   useEffect(() => { try { localStorage.setItem("listingview360:view", viewMode); } catch { /* private browsing */ } }, [viewMode]);
 
   // The API intentionally exposes only approved, real listings. Never approve
@@ -64,6 +63,7 @@ function PropertiesPage() {
     setMinPrice("");
     setMaxPrice("");
     setSortBy("default");
+    setPageNumber(1);
   }
 
   return (
@@ -100,9 +100,13 @@ function PropertiesPage() {
           cities={cities} propertyTypes={propertyTypes} search={search}
           city={city} propertyType={propertyType} bedrooms={bedrooms}
           minPrice={minPrice} maxPrice={maxPrice} sortBy={sortBy}
-          onSearchChange={setSearch} onCityChange={setCity} onPropertyTypeChange={setPropertyType}
-          onBedroomsChange={setBedrooms} onMinPriceChange={setMinPrice} onMaxPriceChange={setMaxPrice}
-          onSortChange={setSortBy} onReset={resetFilters}
+          onSearchChange={v => { setSearch(v); setPageNumber(1); }}
+          onCityChange={v => { setCity(v); setPageNumber(1); }}
+          onPropertyTypeChange={v => { setPropertyType(v); setPageNumber(1); }}
+          onBedroomsChange={v => { setBedrooms(v); setPageNumber(1); }}
+          onMinPriceChange={v => { setMinPrice(v); setPageNumber(1); }}
+          onMaxPriceChange={v => { setMaxPrice(v); setPageNumber(1); }}
+          onSortChange={v => { setSortBy(v); setPageNumber(1); }} onReset={resetFilters}
         />
       </div>
 
@@ -110,7 +114,7 @@ function PropertiesPage() {
         <span role="status" aria-live="polite">{loading ? "Loading properties…" :
           `${visibleProperties.length} ${showingDemos ? "demo" : "real"} ${visibleProperties.length === 1 ? "property" : "properties"} found`}</span>
         <div className="listing-display-controls" aria-label="Listing display controls">
-          <button type="button" aria-pressed={favoritesOnly} onClick={() => setFavoritesOnly(v => !v)}>
+          <button type="button" aria-pressed={favoritesOnly} onClick={() => { setFavoritesOnly(v => !v); setPageNumber(1); }}>
             {favoritesOnly ? "Show all" : `Saved favourites (${favoriteCount})`}
           </button>
           <button type="button" aria-pressed={viewMode === "grid"} onClick={() => setViewMode("grid")}>Grid</button>
