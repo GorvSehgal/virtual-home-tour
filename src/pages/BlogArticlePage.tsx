@@ -35,7 +35,15 @@ export default function BlogArticlePage() {
         },
       });
     }).catch(() => {
-      if (active) setError("This article is not available.");
+      if (active) {
+        setError("This article is not available.");
+        applyDynamicSeo({
+          title: "Article Not Found | ListingView360",
+          description: "This article is unavailable.",
+          path: `/blog/${slug}`,
+          noIndex: true,
+        });
+      }
     }).finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, [slug]);
