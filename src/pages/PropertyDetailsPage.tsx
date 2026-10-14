@@ -7,7 +7,7 @@ import BookingForm from "../components/BookingForm";
 import PropertyImageGallery from "../components/PropertyImageGallery";
 import { Link } from "react-router-dom";
 import { useFavorites } from "../hooks/useFavorites";
-import { applyDynamicSeo } from "../components/SeoManager";
+import { applyDynamicSeo } from "../utils/dynamicSeo";
 import { properties as demoProperties } from "../data/properties";
 
 function PropertyDetailsPage({ demoMode = false }: { demoMode?: boolean }) {
