@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useFavorites } from "../hooks/useFavorites";
+import { pageCount, pageSlice } from "../utils/favorites";
 import { Link } from "react-router-dom";
 import { useProperties } from "../hooks/useProperties";
 import { properties as demoProperties } from "../data/properties";
@@ -15,6 +17,15 @@ function PropertiesPage() {
   const [maxPrice, setMaxPrice] = useState("");
   const [sortBy, setSortBy] = useState("default");
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">(() => {
+    try { return localStorage.getItem("listingview360:view") === "list" ? "list" : "grid"; }
+    catch { return "grid"; }
+  });
+  const [pageNumber, setPageNumber] = useState(1);
+  const { isFavorite, toggleFavorite, count: favoriteCount } = useFavorites();
+  const pageSize = 6;
+  useEffect(() => { try { localStorage.setItem("listingview360:view", viewMode); } catch { /* private browsing */ } }, [viewMode]);
 
   // The API intentionally exposes only approved, real listings. Never approve
   // fictional seed records to fill the page. Instead use a separately labeled
@@ -39,6 +50,11 @@ function PropertiesPage() {
   if (sortBy === "price-asc") sortedProperties.sort((a, b) => a.price - b.price);
   if (sortBy === "price-desc") sortedProperties.sort((a, b) => b.price - a.price);
 
+  const visibleProperties = favoritesOnly ? sortedProperties.filter(isFavorite) : sortedProperties;
+  const totalPages = pageCount(visibleProperties.length, pageSize);
+  const currentPage = Math.min(pageNumber, totalPages);
+  const paginatedProperties = pageSlice(visibleProperties, currentPage, pageSize);
+
   function resetFilters() {
     setSearch("");
     setCity("all");
@@ -47,6 +63,7 @@ function PropertiesPage() {
     setMinPrice("");
     setMaxPrice("");
     setSortBy("default");
+    setPageNumber(1);
   }
 
   return (
@@ -83,20 +100,30 @@ function PropertiesPage() {
           cities={cities} propertyTypes={propertyTypes} search={search}
           city={city} propertyType={propertyType} bedrooms={bedrooms}
           minPrice={minPrice} maxPrice={maxPrice} sortBy={sortBy}
-          onSearchChange={setSearch} onCityChange={setCity} onPropertyTypeChange={setPropertyType}
-          onBedroomsChange={setBedrooms} onMinPriceChange={setMinPrice} onMaxPriceChange={setMaxPrice}
-          onSortChange={setSortBy} onReset={resetFilters}
+          onSearchChange={v => { setSearch(v); setPageNumber(1); }}
+          onCityChange={v => { setCity(v); setPageNumber(1); }}
+          onPropertyTypeChange={v => { setPropertyType(v); setPageNumber(1); }}
+          onBedroomsChange={v => { setBedrooms(v); setPageNumber(1); }}
+          onMinPriceChange={v => { setMinPrice(v); setPageNumber(1); }}
+          onMaxPriceChange={v => { setMaxPrice(v); setPageNumber(1); }}
+          onSortChange={v => { setSortBy(v); setPageNumber(1); }} onReset={resetFilters}
         />
       </div>
 
-      <div className="results-toolbar" role="status" aria-live="polite">
-        {loading
-          ? "Loading properties…"
-          : `${sortedProperties.length} ${showingDemos ? "demo" : "real"} ${sortedProperties.length === 1 ? "property" : "properties"} found`}
+      <div className="results-toolbar listing-results-toolbar">
+        <span role="status" aria-live="polite">{loading ? "Loading properties…" :
+          `${visibleProperties.length} ${showingDemos ? "demo" : "real"} ${visibleProperties.length === 1 ? "property" : "properties"} found`}</span>
+        <div className="listing-display-controls" aria-label="Listing display controls">
+          <button type="button" aria-pressed={favoritesOnly} onClick={() => { setFavoritesOnly(v => !v); setPageNumber(1); }}>
+            {favoritesOnly ? "Show all" : `Saved favourites (${favoriteCount})`}
+          </button>
+          <button type="button" aria-pressed={viewMode === "grid"} onClick={() => setViewMode("grid")}>Grid</button>
+          <button type="button" aria-pressed={viewMode === "list"} onClick={() => setViewMode("list")}>List</button>
+        </div>
       </div>
       {!loading && (
-        <div className="properties-grid">
-          {sortedProperties.length === 0 ? (
+        <div className={`properties-grid ${viewMode === "list" ? "properties-list" : ""}`}>
+          {visibleProperties.length === 0 ? (
             <div className="properties-empty-state">
               <h2>No matching properties</h2>
               <p>{hasActiveFilters
@@ -106,11 +133,19 @@ function PropertiesPage() {
                 <button type="button" className="secondary-button" onClick={resetFilters}>Clear all filters</button>
               )}
             </div>
-          ) : sortedProperties.map(p => (
+          ) : paginatedProperties.map(p => (
             <PropertyCard key={`${showingDemos ? "demo" : "real"}-${p.id}`}
-              property={p} detailsBasePath={showingDemos ? "/demo" : "/properties"} />
+              property={p} detailsBasePath={showingDemos ? "/demo" : "/properties"}
+              isFavorite={isFavorite(p)} onToggleFavorite={() => toggleFavorite(p)} />
           ))}
         </div>
+      )}
+      {!loading && totalPages > 1 && (
+        <nav className="listing-pagination" aria-label="Property result pages">
+          <button type="button" onClick={() => setPageNumber(p => Math.max(1, p - 1))} disabled={currentPage === 1}>Previous</button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button type="button" onClick={() => setPageNumber(p => Math.min(totalPages, p + 1))} disabled={currentPage >= totalPages}>Next</button>
+        </nav>
       )}
       {showingDemos && <p className="properties-demo-footer">
         These properties are fictional demonstrations, not active real estate inventory.

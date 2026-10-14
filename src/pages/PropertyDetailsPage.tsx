@@ -6,10 +6,12 @@ import VirtualTourViewer from "../components/VirtualTourViewer";
 import BookingForm from "../components/BookingForm";
 import PropertyImageGallery from "../components/PropertyImageGallery";
 import { Link } from "react-router-dom";
+import { useFavorites } from "../hooks/useFavorites";
 import { properties as demoProperties } from "../data/properties";
 
 function PropertyDetailsPage({ demoMode = false }: { demoMode?: boolean }) {
     const [showTour, setShowTour] = useState(false);
+  const { isFavorite, toggleFavorite } = useFavorites();
   const { id } = useParams<{ id: string }>();
 
   const requestedId = id ? Number(id) : undefined;
@@ -42,9 +44,15 @@ function PropertyDetailsPage({ demoMode = false }: { demoMode?: boolean }) {
       </p>
     </div>
 
-    <p className="details-price">
+    <div className="details-actions">
+      <button type="button" className="secondary-button" aria-pressed={isFavorite(property)}
+        onClick={() => toggleFavorite(property)}>
+        {isFavorite(property) ? "♥ Saved to favourites" : "♡ Save to favourites"}
+      </button>
+      <p className="details-price">
       ${property.price.toLocaleString("en-CA")}
-    </p>
+      </p>
+    </div>
   </div>
 
   {property.isDemo && (
@@ -66,6 +74,15 @@ function PropertyDetailsPage({ demoMode = false }: { demoMode?: boolean }) {
     {property.yearBuilt && <span>Built {property.yearBuilt}</span>}
   </div>
 
+  {!property.isDemo && (
+    <section className="property-location-map" aria-label="Property location">
+      <h2>Location</h2>
+      <p>{property.address}, {property.city}, {property.province} {property.postalCode}</p>
+      <iframe title={`Map of ${property.title}`} loading="lazy" referrerPolicy="no-referrer"
+        src={`https://maps.google.com/maps?q=${encodeURIComponent([property.address, property.city, property.province, property.postalCode].join(", "))}&output=embed`} />
+      <p><a target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([property.address, property.city, property.province, property.postalCode].join(", "))}`}>Open location in Google Maps ↗</a></p>
+    </section>
+  )}
   <section className="property-about">
     <h2>About this property</h2>
     <p>{property.description}</p>

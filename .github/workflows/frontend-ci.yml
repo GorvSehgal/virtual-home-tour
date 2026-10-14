@@ -15,5 +15,6 @@ jobs:
           node-version: "22"
           cache: npm
       - run: npm ci
+      - run: node --experimental-strip-types --test src/utils/favorites.test.ts
       - run: npm run lint
       - run: npm run build
