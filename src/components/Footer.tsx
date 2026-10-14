@@ -16,6 +16,7 @@ function Footer() {
             <h4>Explore</h4>
             <Link to="/properties">Properties</Link>
             <Link to="/demo">360° Demo</Link>
+            <Link to="/blog">Blog &amp; Insights</Link>
           </div>
   
           <div>
