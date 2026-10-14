@@ -67,6 +67,13 @@ function replaceCanonical(html, path) {
   return html.replace("</head>", `    ${canonical}\n  </head>`);
 }
 
+// Dynamic routes must not inherit the homepage canonical from index.html.
+// Their canonical is assigned by SeoManager after React resolves the URL.
+const fallbackHtml = template
+  .replace(/<link\\s+rel="canonical"[^>]*>/i, "")
+  .replace(/<meta\\s+property="og:url"[^>]*>/i, "");
+await writeFile(join(out, "app.html"), fallbackHtml);
+
 for (const route of routes) {
   let html = replaceTitle(template, route.title);
   html = replaceCanonical(html, route.path);
