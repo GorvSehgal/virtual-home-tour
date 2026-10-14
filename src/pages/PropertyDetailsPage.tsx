@@ -7,6 +7,7 @@ import BookingForm from "../components/BookingForm";
 import PropertyImageGallery from "../components/PropertyImageGallery";
 import { Link } from "react-router-dom";
 import { useFavorites } from "../hooks/useFavorites";
+import { applyDynamicSeo } from "../components/SeoManager";
 import { properties as demoProperties } from "../data/properties";
 
 function PropertyDetailsPage({ demoMode = false }: { demoMode?: boolean }) {
@@ -23,6 +24,30 @@ function PropertyDetailsPage({ demoMode = false }: { demoMode?: boolean }) {
   const property = demoMode
     ? demoProperties.find((item) => item.id === requestedId) ?? null
     : apiProperty;
+
+  useEffect(() => {
+    if (demoMode || !apiProperty || apiProperty.isDemo) return;
+    const path = `/properties/${apiProperty.id}`;
+    applyDynamicSeo({
+      title: `${apiProperty.title} in ${apiProperty.city}, ${apiProperty.province} | ListingView360`,
+      description: `${apiProperty.description} Explore this Canadian property listing and request an in-person viewing.`.slice(0, 170),
+      path,
+      image: apiProperty.image,
+      structuredData: {
+        "@context": "https://schema.org",
+        "@type": "RealEstateListing",
+        name: apiProperty.title,
+        description: apiProperty.description,
+        url: `https://listingview360.ca${path}`,
+        image: apiProperty.image,
+        offers: {
+          "@type": "Offer",
+          priceCurrency: "CAD",
+          price: apiProperty.price,
+        },
+      },
+    });
+  }, [demoMode, apiProperty]);
 
   if (loading) return <p role="status">Loading property...</p>;
   if (error) return <p role="alert">Could not load property: {error}</p>;
