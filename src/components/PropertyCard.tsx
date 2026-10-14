@@ -4,12 +4,17 @@ import type { Property } from "../types/Property";
 type PropertyCardProps = {
   property: Property;
   detailsBasePath?: string;
+  isFavorite?: boolean;
+  onToggleFavorite?: () => void;
 };
 
-function PropertyCard({ property, detailsBasePath = "/properties" }: PropertyCardProps) {
+function PropertyCard({ property, detailsBasePath = "/properties", isFavorite = false, onToggleFavorite }: PropertyCardProps) {
   return (
     <article className="property-card">
       <div className="property-card-image">
+        {onToggleFavorite && <button type="button" className="favorite-button" aria-pressed={isFavorite}
+          aria-label={isFavorite ? `Remove ${property.title} from favourites` : `Save ${property.title} to favourites`}
+          onClick={onToggleFavorite}>{isFavorite ? "♥ Saved" : "♡ Save"}</button>}
         <img
           src={property.image}
           alt={`${property.title} in ${property.city}, ${property.province}`}
