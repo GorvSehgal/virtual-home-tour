@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getBlog } from "../services/blogApi";
 import type { BlogArticle } from "../services/blogApi";
+import { applyDynamicSeo } from "../components/SeoManager";
 import "./Blog.css";
 
 export default function BlogArticlePage() {
@@ -15,9 +16,24 @@ export default function BlogArticlePage() {
     void getBlog(slug).then(item => {
       if (!active) return;
       setArticle(item);
-      document.title = `${item.title} | ListingView360`;
-      const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-      if (description) description.content = item.excerpt;
+      const path = `/blog/${item.slug}`;
+      applyDynamicSeo({
+        title: `${item.title} | ListingView360`,
+        description: item.excerpt,
+        path,
+        structuredData: {
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: item.title,
+          description: item.excerpt,
+          mainEntityOfPage: `https://listingview360.ca${path}`,
+          ...(item.publishedAt ? { datePublished: item.publishedAt } : {}),
+          dateModified: item.updatedAt,
+          publisher: {
+            "@id": "https://listingview360.ca/#organization",
+          },
+        },
+      });
     }).catch(() => {
       if (active) setError("This article is not available.");
     }).finally(() => { if (active) setLoading(false); });
