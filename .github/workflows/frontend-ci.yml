@@ -18,6 +18,7 @@ jobs:
       - run: node --experimental-strip-types --test src/utils/favorites.test.ts
       - run: npm run lint
       - run: npm run build
+      - run: node scripts/check-seo.mjs
       - name: Production smoke test (public routes and admin protection)
         if: github.event_name == 'pull_request'
         run: node scripts/smoke-production.mjs

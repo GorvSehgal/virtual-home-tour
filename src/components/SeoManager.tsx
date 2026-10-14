@@ -1,18 +1,13 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { properties } from "../data/properties";
+import { applyDynamicSeo } from "../utils/dynamicSeo";
+import type { SeoConfig } from "../utils/dynamicSeo";
 
 const SITE_NAME = "ListingView360";
 const SITE_URL = "https://listingview360.ca";
 
-type SeoConfig = {
-  title: string;
-  description: string;
-  path: string;
-  noIndex?: boolean;
-  image?: string;
-  structuredData?: Record<string, unknown>;
-};
+
 
 const routeSeo: Record<string, SeoConfig> = {
   "/": {
@@ -73,6 +68,7 @@ const routeSeo: Record<string, SeoConfig> = {
     description:
       "Submit your Canadian property listing to ListingView360 and create an immersive virtual-tour experience designed to engage serious buyers.",
     path: "/list-property",
+    noIndex: true,
   },
   "/contact": {
     title: "Contact ListingView360 | 360° Real Estate Tours",
@@ -88,52 +84,6 @@ const routeSeo: Record<string, SeoConfig> = {
   },
 };
 
-function upsertMeta(attribute: "name" | "property", key: string, content: string) {
-  let element = document.head.querySelector(
-    `meta[${attribute}="${key}"]`
-  ) as HTMLMetaElement | null;
-
-  if (!element) {
-    element = document.createElement("meta");
-    element.setAttribute(attribute, key);
-    document.head.appendChild(element);
-  }
-
-  element.content = content;
-}
-
-function upsertCanonical(url: string) {
-  let element = document.head.querySelector(
-    'link[rel="canonical"]'
-  ) as HTMLLinkElement | null;
-
-  if (!element) {
-    element = document.createElement("link");
-    element.rel = "canonical";
-    document.head.appendChild(element);
-  }
-
-  element.href = url;
-}
-
-function setStructuredData(data?: Record<string, unknown>) {
-  const existing = document.head.querySelector(
-    'script[data-listingview360-seo="structured-data"]'
-  );
-
-  existing?.remove();
-
-  if (!data) {
-    return;
-  }
-
-  const script = document.createElement("script");
-  script.type = "application/ld+json";
-  script.dataset.listingview360Seo = "structured-data";
-  script.text = JSON.stringify(data);
-  document.head.appendChild(script);
-}
-
 function getSeoConfig(pathname: string): SeoConfig {
   const normalizedPath =
     pathname.length > 1 ? pathname.replace(/\/$/, "") : pathname;
@@ -142,6 +92,15 @@ function getSeoConfig(pathname: string): SeoConfig {
 
   if (staticConfig) {
     return staticConfig;
+  }
+
+  if (["/dashboard", "/signup", "/realtor/tools"].includes(normalizedPath)) {
+    return {
+      title: "Account | ListingView360",
+      description: "Private account and realtor tools.",
+      path: normalizedPath,
+      noIndex: true,
+    };
   }
 
   if (normalizedPath === "/admin/blog") {
@@ -171,22 +130,16 @@ function getSeoConfig(pathname: string): SeoConfig {
     };
   }
 
+  // Numeric API listing IDs may overlap local fictional demo IDs.
+  // Keep detail routes out of the index until the approved API listing loads.
   const propertyMatch = normalizedPath.match(/^\/properties\/(\d+)$/);
-
   if (propertyMatch) {
-    const property = properties.find(
-      (item) => item.id === Number(propertyMatch[1])
-    );
-
-    if (property) {
-      return {
-        title: `${property.title} in ${property.city}, ${property.province} | ListingView360`,
-        description: `${property.description} Explore the property with a 360° virtual tour and request an in-person viewing.`,
-        path: normalizedPath,
-        noIndex: property.isDemo,
-        image: property.image,
-      };
-    }
+    return {
+      title: "Property Details | ListingView360",
+      description: "Explore an approved Canadian property listing on ListingView360.",
+      path: normalizedPath,
+      noIndex: true,
+    };
   }
 
   return {
@@ -201,37 +154,7 @@ function SeoManager() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const config = getSeoConfig(pathname);
-    const canonicalUrl = new URL(config.path, SITE_URL).toString();
-    const robots = config.noIndex
-      ? "noindex, nofollow"
-      : "index, follow, max-image-preview:large";
-
-    document.title = config.title;
-    document.documentElement.lang = "en-CA";
-
-    upsertMeta("name", "description", config.description);
-    upsertMeta("name", "robots", robots);
-    upsertMeta("property", "og:title", config.title);
-    upsertMeta("property", "og:description", config.description);
-    upsertMeta("property", "og:url", canonicalUrl);
-    upsertMeta("property", "og:site_name", SITE_NAME);
-    upsertMeta("property", "og:type", "website");
-    upsertMeta("name", "twitter:card", "summary");
-    upsertMeta("name", "twitter:title", config.title);
-    upsertMeta("name", "twitter:description", config.description);
-
-    if (config.image) {
-      const imageUrl = new URL(config.image, SITE_URL).toString();
-      upsertMeta("property", "og:image", imageUrl);
-      upsertMeta("name", "twitter:image", imageUrl);
-    } else {
-      document.head.querySelector('meta[property="og:image"]')?.remove();
-      document.head.querySelector('meta[name="twitter:image"]')?.remove();
-    }
-
-    upsertCanonical(canonicalUrl);
-    setStructuredData(config.structuredData);
+    applyDynamicSeo(getSeoConfig(pathname));
   }, [pathname]);
 
   return null;
