@@ -14,6 +14,9 @@ import NotFoundPage from "./pages/NotFoundPage";
 import SeoManager from "./components/SeoManager";
 import RealtorToolsPage from "./pages/RealtorToolsPage";
 import DemoListingsPage from "./pages/DemoListingsPage";
+import BlogListPage from "./pages/BlogListPage";
+import BlogArticlePage from "./pages/BlogArticlePage";
+import BlogAdminPage from "./pages/BlogAdminPage";
 
 function App() {
   return (
@@ -35,6 +38,9 @@ function App() {
         <Route path="/dashboard" element={<ListingDashboardPage />} />
         <Route path="/signup" element={<ListingDashboardPage defaultAuthMode="signup" />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/blog" element={<BlogListPage />} />
+        <Route path="/blog/:slug" element={<BlogArticlePage />} />
+        <Route path="/admin/blog" element={<BlogAdminPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

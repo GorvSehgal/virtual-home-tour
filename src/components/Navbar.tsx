@@ -41,6 +41,10 @@ function Navbar() {
             For Realtors
           </Link>
 
+          <Link to="/blog" onClick={closeMenu}>
+            Blog
+          </Link>
+
           <Link to="/contact" onClick={closeMenu}>
             Contact
           </Link>

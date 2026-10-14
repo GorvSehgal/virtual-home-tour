@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import type { ChangeEvent, FormEvent } from "react";
 import { realtorApiConfigured, realtorLogin, realtorSignup, pendingRealtors, reviewRealtorAccount } from "../services/realtorApi";
 import type { RealtorSession, PendingRealtor } from "../services/realtorApi";
@@ -286,6 +287,7 @@ export default function ListingDashboardPage({ defaultAuthMode = "login" }: { de
             <p>Signed in as <strong>{session.user.email}</strong> ({session.user.role})</p>
             <button className="secondary-button" type="button" onClick={logout}>Sign out</button>
           </div>
+          {session.user.role === "admin" && <p><Link to="/admin/blog" className="secondary-button">Manage blog articles →</Link></p>}
           <LeadsPanel session={session} />
           <AccountSecurityPanel session={session} />
           {session.user.role === "admin" && (
