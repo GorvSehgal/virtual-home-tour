@@ -73,6 +73,7 @@ const routeSeo: Record<string, SeoConfig> = {
     description:
       "Submit your Canadian property listing to ListingView360 and create an immersive virtual-tour experience designed to engage serious buyers.",
     path: "/list-property",
+    noIndex: true,
   },
   "/contact": {
     title: "Contact ListingView360 | 360° Real Estate Tours",
@@ -142,6 +143,15 @@ function getSeoConfig(pathname: string): SeoConfig {
 
   if (staticConfig) {
     return staticConfig;
+  }
+
+  if (["/dashboard", "/signup", "/realtor/tools"].includes(normalizedPath)) {
+    return {
+      title: "Account | ListingView360",
+      description: "Private account and realtor tools.",
+      path: normalizedPath,
+      noIndex: true,
+    };
   }
 
   if (normalizedPath === "/admin/blog") {
