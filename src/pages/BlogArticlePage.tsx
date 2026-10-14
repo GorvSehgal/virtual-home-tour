@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getBlog } from "../services/blogApi";
 import type { BlogArticle } from "../services/blogApi";
-import { applyDynamicSeo } from "../components/SeoManager";
+import { applyDynamicSeo } from "../utils/dynamicSeo";
 import "./Blog.css";
 
 export default function BlogArticlePage() {
