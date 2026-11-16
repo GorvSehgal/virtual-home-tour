@@ -8,11 +8,13 @@ export type DraftInput = {
   propertyType: string;
   city: string;
   province: string;
+  address?: string;
+  notes?: string;
   bedrooms: number;
   bathrooms: number;
   price?: number;
   features: string[];
-  tone: "professional" | "warm" | "luxury";
+  tone: "professional" | "warm" | "luxury" | "family-friendly" | "investor";
 };
 
 type Envelope<T> = { success: boolean; message?: string; data?: T };
