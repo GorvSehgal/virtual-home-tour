@@ -6,12 +6,13 @@ import "./RealtorToolsPage.css";
 
 type Fields = {
   title: string; propertyType: string; city: string; province: string;
+  address: string; notes: string;
   bedrooms: string; bathrooms: string; price: string; features: string;
   tone: DraftInput["tone"];
 };
 
 const initialFields: Fields = {
-  title: "", propertyType: "Condo", city: "", province: "ON",
+  title: "", propertyType: "Condo", city: "", province: "ON", address: "", notes: "",
   bedrooms: "2", bathrooms: "2", price: "", features: "", tone: "professional",
 };
 
@@ -71,7 +72,9 @@ function RealtorToolsPage() {
       return;
     }
     const input: DraftInput = {
-      title: fields.title.trim(),
+      title: fields.title.trim() || `Home at ${fields.address.trim()}`,
+      address: fields.address.trim(),
+      notes: fields.notes.trim(),
       propertyType: fields.propertyType,
       city: fields.city.trim(),
       province: fields.province.trim(),
@@ -105,7 +108,7 @@ function RealtorToolsPage() {
     <main className="realtor-tools-page">
       <section className="realtor-tools-heading">
         <p className="section-eyebrow">LISTINGVIEW360 FOR REALTORS</p>
-        <h1>Realtor Description Tools</h1>
+        <h1>AI Property Description Generator</h1>
         <p>Create a first draft of a property description using verified listing details.
           Descriptions use locally generated templates when no AI provider is connected; nothing is published automatically.</p>
       </section>
@@ -136,9 +139,13 @@ function RealtorToolsPage() {
               <button type="button" className="secondary-button" onClick={logout}>Sign out</button>
             </div>
             <h2>Listing description</h2>
-            <label htmlFor="ai-title">Listing title</label>
-            <input id="ai-title" required minLength={3} maxLength={140} value={fields.title}
+            <label htmlFor="ai-title">Listing title (optional)</label>
+            <input id="ai-title" minLength={3} maxLength={140} value={fields.title}
               onChange={(e) => update("title", e.target.value)} />
+            <label htmlFor="ai-address">Property address *</label>
+            <input id="ai-address" required minLength={5} maxLength={220} value={fields.address}
+              onChange={(e) => update("address", e.target.value)}
+              placeholder="123 King Street West" />
             <div className="realtor-tools-pair">
               <div>
                 <label htmlFor="ai-type">Property type</label>
@@ -182,12 +189,18 @@ function RealtorToolsPage() {
             <textarea id="ai-features" rows={3} value={fields.features}
               onChange={(e) => update("features", e.target.value)}
               placeholder="Balcony, Parking, Renovated kitchen" />
+            <label htmlFor="ai-notes">Additional property notes</label>
+            <textarea id="ai-notes" rows={4} maxLength={1800} value={fields.notes}
+              onChange={(e) => update("notes", e.target.value)}
+              placeholder="Kitchen updates, outdoor space, storage, parking, nearby features you have verified..." />
             <label htmlFor="ai-tone">Writing style</label>
             <select id="ai-tone" value={fields.tone}
               onChange={(e) => update("tone", e.target.value)}>
               <option value="professional">Professional</option>
-              <option value="warm">Warm</option>
               <option value="luxury">Luxury</option>
+              <option value="family-friendly">Family-friendly</option>
+              <option value="investor">Investor</option>
+              <option value="warm">Warm</option>
             </select>
             <button className="primary-button" type="submit" disabled={working}>
               {working ? "Creating draft..." : "Generate draft"}
